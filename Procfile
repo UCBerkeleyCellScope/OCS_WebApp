@@ -1,1 +1,1 @@
-web: gunicorn cellscope:run
+web: gunicorn run:run
