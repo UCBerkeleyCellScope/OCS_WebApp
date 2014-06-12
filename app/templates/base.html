@@ -1,0 +1,46 @@
+<html>
+  <head>
+    
+
+    {% if title %}
+      <title>{{title}} - CellScope </title>
+    {% else %}
+      <title>The Ocular CellScope</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src=" //netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+    
+    <div class = "container">
+
+      <div>The Ocular CellScope: <a href="{{url_for('index')}}">Home</a>
+        {% if g.user.is_authenticated() %}
+        | <a href="{{ url_for('user', username = g.user.username) }}">Your Profile</a>
+        | <a href="{{ url_for('logout') }}"> Logout</a>
+        {% endif %}
+      </div>
+
+      <hr>
+      {% with messages = get_flashed_messages() %} <!-- ensures that it'll fail clean -->
+      {% if messages %}
+      <ul>
+      {% for message in messages %}
+          <li>{{ message }} </li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %} <!--We chose to name it content-->
+
+    </div>
+  </body>
+</html>
