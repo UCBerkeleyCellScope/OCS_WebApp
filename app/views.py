@@ -119,8 +119,9 @@ def fetch_exams(study_name):
 
     exams = Exam.query.all()
     
-    for ex in exams:    
-      print str(ex.eyeImages)
+    if exams is not None:
+      for ex in exams:    
+        print str(ex.eyeImages)
 
     if(study_name == "trachoma"):
       patient1= {"firstName": "John", "lastName": "Smith", "mrn":"123", "date": "May 23rd 1990","uuid":8549085094235}
