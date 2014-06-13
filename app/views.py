@@ -135,7 +135,8 @@ def fetch_exams(study_name):
     
     global exams_list
     exams_list=[patient1,patient2,patient3]
-    return render_template('exams.html', exams_list=exams_list)
+    return render_template('exams.html', exams_list=exams_list, exams = exams)
+
 
 @app.route('/select/<study_name>/<uuid>')
 def fetch_single_exam(study_name,uuid):
@@ -160,15 +161,43 @@ def deleteAll():
   db.session.commit()
 
 @app.route('/exam', methods=['POST'])
+#Every Time an Exam is uploaded, an exam object is created
 def uploadExam():
   fn = request.form["firstName"]
   ln = request.form["lastName"]
   exam_uuid = request.form["exam_uuid"]
+  date = request.form["date"]
+
+  #should avoid using boto as much as possible for speed!!!!!!!!!!!!
+
+  #???should 
+  #BUCKET = exam
+  #bucket has many keys.. which are images
+
   #study_name = request.form["study_name"]
+
+  #Create string uuid+
+  #bucketName = app.config['AWS_ACCESS_KEY_ID']
+  if(fn is None or ln is None):
+    bucketName = date+"-"+exam_uuid
+    fn = "Place"
+    ln = "Holder"
+  else:
+    bucketName = date+"-"+ln+"-"+fn+"-"+exam_uuid
+
+  b = s3connection.lookup(bucketName) 
+
+  if(b is None):
+    b = s3connection.create_bucket(bucket_Name = bucketName)
+
   exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid)
   db.session.add(exam)
   db.session.commit()
+
+  #NEED TO RETURN REFERENCE TO B SOMEHOW!
   return jsonify(status="Exam Created")
+
+  #2002-01-31-LAST-FIRST-UUID
 
 @app.route('/uploader', methods=['GET', 'POST'])
 def uploader():
