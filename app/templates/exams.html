@@ -21,8 +21,7 @@
     {%set url_param = exam["uuid"]|string %}
     {%set url_path = request.path+"/"+url_param %}
 
-    <tr class='clickableRow' href="{{url_path}}"> 
-      
+    <tr class='clickableRow' href="{{url_path}}">       
         <td >       
             <p> {{exam["lastName"]}}, {{exam["firstName"]}} </p>
         </td>
@@ -32,9 +31,34 @@
         <td>
           <p> {{exam["date"]}} </p>
         </td>
-
     </tr>
   {%endfor%}
+</table>
+
+<table class ="table table-striped table-hover">
+  <tr>
+    <th>
+      <p>Last Name, First</p>
+        <!-- Also include thumbnail, flagged icon -->
+    </th>
+    <th>
+      <p> UUID </p>
+    </th>
+  </tr>
+  {% for exam  in exams %}  
+    {%set url_param = exam.uuid %}
+    {%set url_path = request.path+"/"+url_param %}
+
+    <tr class='clickableRow' href="{{url_path}}"> 
+        <td >       
+          <p> {{exam.lastName}}, {{exam.firstName}} </p>
+        </td>
+        <td>
+          <p> {{exam.uuid}} </p>
+        </td>
+    </tr>
+  {%endfor%}
+</table>
 
 <script>
 jQuery(document).ready(function($) {
