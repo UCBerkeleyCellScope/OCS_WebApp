@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, session, url_for, request, g
+from flask import render_template, flash, redirect, session, url_for, request, g, jsonify
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, s3connection #,oid
 from forms import LoginForm
@@ -160,42 +160,75 @@ def deleteAll():
     db.session.delete(eyeImage)
   db.session.commit()
 
-@app.route('/exam', methods=['POST'])
-#Every Time an Exam is uploaded, an exam object is created
-def uploadExam():
-  fn = request.form["firstName"]
-  ln = request.form["lastName"]
-  exam_uuid = request.form["exam_uuid"]
-  date = request.form["date"]
+@app.route('/test', methods=['GET','POST'])
+def test():
+  if(request.method=="POST"):
+    print "args"+str(request.args)
+    print "form"+str(request.form)
 
-  #should avoid using boto as much as possible for speed!!!!!!!!!!!!
+    print "values"+str(request.values)
+    print "data"+str(request.data)
 
-  #???should 
-  #BUCKET = exam
-  #bucket has many keys.. which are images
+    return request.form["firstName"]
 
-  #study_name = request.form["study_name"]
-
-  #Create string uuid+
-  #bucketName = app.config['AWS_ACCESS_KEY_ID']
-  if(fn is None or ln is None):
-    bucketName = date+"-"+exam_uuid
-    fn = "Place"
-    ln = "Holder"
+    #return str(request.values["firstName"])
+    #return "OMG POST\n"
   else:
-    bucketName = date+"-"+ln+"-"+fn+"-"+exam_uuid
+    return "HOLY MOLY\n"
 
-  b = s3connection.lookup(bucketName) 
+@app.route('/exam', methods=['GET','POST'])
+#Every Time an Exam is uploaded, an exam object is created
+def exam():
 
-  if(b is None):
-    b = s3connection.create_bucket(bucket_Name = bucketName)
+  if request.method == 'GET':
+    print "OMG GET REQUEST"
 
-  exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid)
-  db.session.add(exam)
-  db.session.commit()
+  else:
 
-  #NEED TO RETURN REFERENCE TO B SOMEHOW!
-  return jsonify(status="Exam Created")
+    if("firstName" in request.form):
+      fn = request.form["firstName"]
+      print fn
+    if("lastName" in request.form):
+      ln = request.form["lastName"]
+    if("exam_uuid" in request.form):
+      exam_uuid = request.form["exam_uuid"]
+    if("date" in request.form):      
+      date = request.form["date"]
+
+    #should avoid using boto as much as possible for speed!!!!!!!!!!!!
+
+    #???should 
+    #BUCKET = exam
+    #bucket has many keys.. which are images
+
+    #study_name = request.form["study_name"]
+
+    #Create string uuid+
+    #bucketName = app.config['AWS_ACCESS_KEY_ID']
+    
+    if(fn is None or ln is None):
+      bucketName = date+"-"+exam_uuid
+      fn = "Place"
+      ln = "Holder"
+    else:
+      bucketName = date+"-"+ln+"-"+fn+"-"+exam_uuid
+
+    '''
+    b = s3connection.lookup(bucketName) 
+
+    if(b is None):
+      b = s3connection.create_bucket(bucket_Name = bucketName)
+    '''
+
+    exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
+    if not exam:
+      exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid)
+      db.session.add(exam)
+      db.session.commit()
+      return jsonify(status="Exam Created")
+    else:
+      return jsonify(status="Exam was a duplicate and was not saved")
+    #NEED TO RETURN REFERENCE TO B SOMEHOW!   
 
   #2002-01-31-LAST-FIRST-UUID
 
