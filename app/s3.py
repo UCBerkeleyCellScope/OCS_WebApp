@@ -14,9 +14,26 @@ def uploadImage(s3connection,mrn,date,imageData):
   k.set_contents_from_file(object, replace = True) # THIS SHOULD NEVER REPLACE
   print "Uploading to " + bucketName + " with key: " + k.key
   k.set_acl('public-read')
-  url = k.generate_url(expires_in=999999, query_auth=False)
+  url = k.generate_url(expires_in=0, query_auth=False)
   t = k.key, url
   return t
+
+def createBucket(s3connection,bucketName):
+  b = s3connection.create_bucket(bucketName)
+  #check if bucket exists
+  #if not, create the bucket
+  #return the confirmation
+
+def getBucket(s3connection,bucketName):
+  return s3connection.get_bucket(bucketName)
+
+def uploadToS3(bucket,imageName,image):
+  k = Key(bucket)
+  k.key = imageName
+  k.set_contents_from_file(image, replace = True)
+  k.set_acl('public-read')
+  url = k.generate_url(expires_in=0, query_auth=False)
+  return url
 
 def getExam(s3connection,mrn,date):
   bucketName = mrn + '_' + date

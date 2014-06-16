@@ -44,6 +44,9 @@
     <th>
       <p> UUID </p>
     </th>
+    <th>
+      <p> Date </p>
+    </th>
   </tr>
   {% for exam  in exams %}  
     {%set url_param = exam.uuid %}
@@ -55,6 +58,9 @@
         </td>
         <td>
           <p> {{exam.uuid}} </p>
+        </td>
+        <td>
+          <p> {{exam.date}} </p>
         </td>
     </tr>
   {%endfor%}

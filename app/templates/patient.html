@@ -2,10 +2,6 @@
 {% extends "base.html" %}
 
 {%block content%}
-<h1> {{exam.firstName}} {{exam.lastName}}</h1>
-<h2> {{exam["mrn"]}} </h2>
-<h2> {{exam["date"]}} </h2>
-
 <table class ="table table-striped table-hover">
   <tr>
     <th>
@@ -13,7 +9,7 @@
         <!-- Also include thumbnail, flagged icon -->
     </th>
     <th>
-      <p> MRN </p>
+      <p> UUID </p>
     </th>
     <th>
       <p> Exam Date </p>
@@ -22,13 +18,13 @@
 
   <tr>
     <td>   
-      <p> {{exam["lastName"]}}, {{exam["firstName"]}} </p>
+      <p> {{exam.lastName}}, {{exam.firstName}} </p>
     </td>
     <td>
-      <p> {{exam["mrn"]}} </p>
+      <p> {{exam.uuid}} </p>
     </td>
     <td>
-      <p> {{exam["date"]}} </p>
+      <p> {{exam.date}} </p>
     </td>
   </tr>
 
@@ -36,7 +32,7 @@
 
   {% for eyeImage in exam.eyeImages %}
 
-    {%set url_param = ei["uuid"]|string %}
+    {%set url_param = eyeImage.uuid %}
     {%set url_path = request.path+"/"+url_param %}
 
     <div class="col-lg-2 col-sm-3 col-xs-4">
@@ -45,75 +41,13 @@
         </a>
     </div>
 
+    <!--
     <div class="col-lg-2 col-sm-3 col-xs-4">
       <a href="{{url_path}}">
         <img src="{{eyeImage.thumbnail}}" class="thumbnail img-responsive">
       </a>
     </div>
-
+    -->
   {% endfor %}
-
-  <table>
-
-  {% for ei  in exam.eyeImages %}
-
-    {%set url_param = ei["uuid"]|string %}
-    {%set url_path = request.path+"/"+url_param %}
-
-
-    {% if counter%5 == 0 %}
-    <tr>
-      <td>
-        <div id = ei.id>
-
-          {%set url_param = exam["uuid"]|string %}
-          {%set url_path = request.path+"/"+url_param %}
-
-          <a href={{url_path}}>
-            <img src = ei.thumbnail class="img-thumbnail" alt="image {{ei.id}}" height = "250px" width = "250px">
-          </a>
-
-        </div>
-      </td>
-
-
-    {% elif counter%5 == 4 %}
-
-      <td>
-        <div id = {{element.id}}
-          
-          <h2> Image #{{element.id}} </h2>
-
-          <a href={{url_string}}>
-            <img src = {{element.url}} class="img-thumbnail" alt="image{{element.id}}" height = "250px" width = "250px">
-          </a>
-
-        </div>
-      </td>
-    </tr>
-
-
-    {% else %}
-
-      <td>
-        <div id = {{element.id}}
-          
-          <h2> Image #{{element.id}} </h2>
-
-          <a href={{url_string}}>
-            <img src = {{element.url}} class="img-thumbnail" alt="image{{element.id}}" height = "250px" width = "250px">
-          </a>
-
-        </div>
-      </td>
-
-    {% endif %}
-
-    {% set counter = counter +1 %}
-
-  {% endfor %}
-
-  <table>
-
 
 {%endblock%}
