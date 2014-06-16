@@ -54,14 +54,17 @@ class Exam(db.Model):
     bucket = db.Column(db.String(80),unique=True)
     uuid = db.Column(db.String(80),unique=True)
 
-    def __init__(self, firstName, lastName, uuid):
+    def __init__(self, firstName, lastName, uuid, bucket):
       self.firstName = firstName
       self.lastName = lastName
       self.uuid= uuid
+      self.bucket=bucket
 
     def __repr__(self):
         #return '<Exam %r>' % (self.id)
-        return'<Exam First Name:{!s} Last Name:{!s}'.format(self.firstName,self.lastName)
+        return '<Exam First Name:{!s} Last Name:{!s} UUID:{!s} # Images:{!s} Bucket:{!s}'\
+        .format(self.firstName,self.lastName,self.uuid,self.eyeImages,self.bucket)
+        #.format(self.firstName,self.lastName,self.uuid,str(len(self.eyeImages)))
         #return "TESTING"
 
 class EyeImage(db.Model):
@@ -76,12 +79,28 @@ class EyeImage(db.Model):
     imageKey = db.Column(db.String(80))
     uuid = db.Column(db.String(80),unique=True)
 
-    def __init__(self, imageURL, uuid, eye, fixationLight, thumbnail):
+    '''
+    def __init__(self, imageURL=None, uuid=None, eye=None, fixationLight=None, thumbnail=None):
       self.imageURL = imageURL
       self.uuid = uuid
       self.eye = eye
       self.fixationLight = fixationLight
       self.thumbnail = thumbnail
+    '''
+
+     
+    def __init__(self, imageURL, uuid, eye, fixationLight):
+      self.imageURL = imageURL
+      self.uuid = uuid
+      self.eye = eye
+      self.fixationLight = fixationLight
+    
+
+    '''
+    def __init__(self, thumbnail):
+      self.thumbnail = thumbnail
+    '''
 
     def __repr__(self):
-        return '<EyeImage UUID:{!s} Eye:{!s} Fixation:{!s}>'.format(self.uuid,self.eye,self.fixationLight)
+        #return '<EyeImage UUID:{!s} Eye:{!s} Fixation:{!s} EyeImage UUID:{!s}>'.format(self.uuid,self.eye,self.fixationLight,self.uuid)
+        return "test"
