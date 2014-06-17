@@ -1,5 +1,6 @@
 import boto
 from boto.s3.key import Key
+import string, random
 
 def connect(access_id,secret):
   s3connection = boto.connect_s3(access_id,secret)
@@ -11,6 +12,7 @@ def uploadImage(s3connection,mrn,date,imageData):
   bucketName = mrn + '_' + date
   b = s3connection.create_bucket(bucketName)
   k = Key(b)
+  bucketName = bucketName+ ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
   k.key = bucketName
   k.set_contents_from_file(object, replace = True) # THIS SHOULD NEVER REPLACE
   print "Uploading to " + bucketName + " with key: " + k.key
