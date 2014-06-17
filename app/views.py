@@ -5,6 +5,7 @@ from forms import LoginForm
 from models import User, ROLE_SPECIALIST, ROLE_ADMIN, EyeImage, Exam
 from sqlalchemy.util import buffer
 from s3 import uploadToS3, createBucket, getBucket
+from datetime import datetime
 
 global exams_list
 exams_list=[] 
@@ -101,7 +102,8 @@ def exam():
       date = "2000-01-01 11:11:11"
 
     d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
-    bucketName = (date+"-"+ln+"-"+fn+"-"+exam_uuid).lower()
+    yyymmdd = d.strftime("%Y-%m-%d")
+    bucketName = (yyymmdd+"-"+ln+"-"+fn+"-"+exam_uuid).lower()
     
     exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
     if not exam:
