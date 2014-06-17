@@ -53,14 +53,14 @@ class Exam(db.Model):
     eyeImages = db.relationship('EyeImage', backref = 'exam', lazy = 'dynamic')
     bucket = db.Column(db.String(80),unique=True)
     uuid = db.Column(db.String(80),unique=True)
-    date = db.Column(db.String(40))
+      #date = db.Column(db.String(40))
 
     def __init__(self, firstName, lastName, uuid, bucket):
       self.firstName = firstName
       self.lastName = lastName
       self.uuid= uuid
       self.bucket=bucket
-      self.date=date
+      #self.date=date
 
     def __repr__(self):
         #return '<Exam %r>' % (self.id)
@@ -90,7 +90,6 @@ class EyeImage(db.Model):
       self.thumbnail = thumbnail
     '''
 
-     
     def __init__(self, imageURL, uuid, eye, fixationLight):
       self.imageURL = imageURL
       self.uuid = uuid

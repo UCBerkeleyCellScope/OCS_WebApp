@@ -12,6 +12,7 @@ exams_list=[]
 @app.route('/')
 @app.route('/select')
 def select_study():
+    #deleteAll()
 
     study_list = ['Glaucoma','Trachoma','Diabetic Retinopathy']
     return render_template('study_select.html',study_list=study_list)
@@ -89,37 +90,24 @@ def exam():
     if("lastName" in request.form):
       ln = request.form["lastName"]
     else:
-       ln = "Holder"
+      ln = "Holder"
     if("exam_uuid" in request.form):
       exam_uuid = request.form["exam_uuid"]
+    else:
+      exam_uuid = "666"
     if("date" in request.form):      
       date = request.form["date"]
+    else:
+      date = "2000-01-01 11:11:11"
 
-
-
-    #should avoid using boto as much as possible for speed!!!!!!!!!!!!
-    #???should 
-    #BUCKET = exam
-    #bucket has many keys.. which are images
-
-    #study_name = request.form["study_name"]
-
-    #Create string uuid+
-    #bucketName = app.config['AWS_ACCESS_KEY_ID']
-    
+    d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
     bucketName = (date+"-"+ln+"-"+fn+"-"+exam_uuid).lower()
-    '''
-    b = s3connection.lookup(bucketName) 
-
-    if(b is None):
-      b = s3connection.create_bucket(bucket_Name = bucketName)
-    '''
+    
     exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
     if not exam:
       createBucket(s3connection,bucketName)
-
       #include bucketName in Exam model
-      exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName)
+      exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName)#date=date)
       db.session.add(exam)
       db.session.commit()
       return jsonify(status="Exam Created")
@@ -133,7 +121,6 @@ def eyeImage():
   if(request.method == 'GET'):
     eyeImages=EyeImage.query.all()
     eyeImages_dict={}
-
     i = 0
     for ei in eyeImages:
       eyeImages_dict[str(i)] = str(ei)
@@ -141,36 +128,46 @@ def eyeImage():
     print eyeImages
     return jsonify(eyeImages = eyeImages_dict)
 
+@app.route('/postImage', methods=['POST','PUT'])
+def postImage():
+
+  print "form"+str(request.form)
+  print "files"+str(request.files)
+    
+  exam = Exam.query.filter(Exam.uuid== "008").first()
+  if exam:
+    print "PASSED THE FIRST PART"
+    if("file" in request.files):
+      print "FOUND AN IMAGE!!!!!!!"
+      bucket = getBucket(s3connection,exam.bucket)
+      image = request.files['file']
+      imageName = image.filename
+      url = uploadToS3(bucket,imageName,image)
+    
+    eyeImage = EyeImage(imageURL=url, uuid="111",
+      eye=None, fixationLight=None)
+    exam.eyeImages.append(eyeImage)
+    db.session.add(eyeImage)
+    db.session.commit()
+    return jsonify(status="EyeImage Created")
+  else:
+    return jsonify(status="Something Wrong with Exam")
+
+#return jsonify(status="An Image Upload was completed")
+
 @app.route('/uploader', methods=['POST','PUT'])
 def uploader():
 
   #bucketName derived from "lastName-firstName-DD-MM-YY-AWS_ACCESS_KEY"
-  #create bucket(bucketName) #Can try to create, even if already created
-  #create an exam element
-  #note that exam_uuid also has firstName, lastName
-  #mrn = request.form["mrn"]
 
   print "form"+str(request.form)
   print "files"+str(request.files)
   
-  '''
-  if "thumbnail" in request.files:
-    thumbnail = request.files["thumbnail"]
-    #eyeImage = EyeImage(thumbnail=buffer(thumbnail))
-    #eyeImage = EyeImage(thumbnail=thumbnail)
-    #db.session.add(eyeImage)
-    #db.session.commit()
-    return "WORKED\n"
-  else:
-    return "Didn't Work\n"
-  '''
-
   url = "http://cdn.memegenerator.net/instances/500x/50708036.jpg"
-  eyeImage_uuid = request.form["eyeImage_uuid"] 
+
   eye = request.form["eye"]
   fixationLight = int(request.form["fixationLight"]) 
   
-
   if eye == 'left':
     eyeBool = 0
   elif eye == 'right': 
@@ -193,24 +190,27 @@ def uploader():
   #if eye is not "right" or eye is not "left":
     #throw error
 
+  eyeImage_uuid = request.form["eyeImage_uuid"] 
   eyeImage = EyeImage.query.filter(EyeImage.uuid == eyeImage_uuid).first()
   if not eyeImage:
-
-    #insertImageIntoBucket(EeyeImage.exam.bucketName)
-    
-    exam_uuid = request.form["exam_uuid"]
+    print "NOT A DUPLICATE IMAGE"
+    if "exam_uuid" in request.form:
+      exam_uuid = request.form["exam_uuid"]
+    else:
+      print "EXAM_UUID INFO IS BROKEN"
+      exam_uuid = "666"
     exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
     if exam:
-      
-      if("thumbnail" in request.files):
+      print "CORRESPONDING EXAM EXISTS"
+      if("file" in request.files):
+        print "FOUND AN IMAGE!!!!!!!"
         bucket = getBucket(s3connection,exam.bucket)
         image = request.files['file']
         imageName = image.filename
         url = uploadToS3(bucket,imageName,image)
-      
+        print "S3 URL:" + url   
       eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
       exam.eyeImages.append(eyeImage)
-
       db.session.add(eyeImage)
       db.session.commit()
       return jsonify(status="EyeImage Created")
