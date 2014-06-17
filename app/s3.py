@@ -1,4 +1,5 @@
 import boto
+from boto.s3.key import Key
 
 def connect(access_id,secret):
   s3connection = boto.connect_s3(access_id,secret)
