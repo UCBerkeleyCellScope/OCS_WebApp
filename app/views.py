@@ -142,9 +142,12 @@ def postImage():
     if("file" in request.files):
       print "FOUND AN IMAGE!!!!!!!"
       bucket = getBucket(s3connection,exam.bucket)
+      print bucket
       image = request.files['file']
       imageName = image.filename
+      print imageName
       url = uploadToS3(bucket,imageName,image)
+      print url
     
     eyeImage = EyeImage(imageURL=url, uuid="111",
       eye=None, fixationLight=None)
