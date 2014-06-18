@@ -23,6 +23,7 @@ def uploadImage(s3connection,mrn,date,imageData):
 
 def createBucket(s3connection,bucketName):
   b = s3connection.create_bucket(bucketName)
+  print "created bucket"
   #check if bucket exists
   #if not, create the bucket
   #return the confirmation
@@ -31,11 +32,13 @@ def getBucket(s3connection,bucketName):
   return s3connection.get_bucket(bucketName)
 
 def uploadToS3(bucket,imageName,image):
+  print "inside the uploadToS3 method"
   k = Key(bucket)
   k.key = imageName
   k.set_contents_from_file(image, replace = True)
   k.set_acl('public-read')
   url = k.generate_url(expires_in=0, query_auth=False)
+  print "uploaded file to S3"
   return url
 
 def getExam(s3connection,mrn,date):
