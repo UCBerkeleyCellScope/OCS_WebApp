@@ -196,7 +196,9 @@ def uploader():
     #throw error
 
   eyeImage_uuid = request.form["eyeImage_uuid"] 
+  eyeImage_uuid = eyeImage_uuid + + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
   eyeImage = EyeImage.query.filter(EyeImage.uuid == eyeImage_uuid).first()
+  print eyeImage
   if not eyeImage:
     print "NOT A DUPLICATE IMAGE"
     if "exam_uuid" in request.form:
