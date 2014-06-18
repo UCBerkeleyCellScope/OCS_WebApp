@@ -163,6 +163,7 @@ def postImage():
 @app.route('/uploader', methods=['POST','PUT'])
 def uploader():
 
+  print "i am not crazy"
   #bucketName derived from "lastName-firstName-DD-MM-YY-AWS_ACCESS_KEY"
 
   #print "form"+str(request.form)
