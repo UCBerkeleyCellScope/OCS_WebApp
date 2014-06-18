@@ -165,11 +165,10 @@ def uploader():
 
   #bucketName derived from "lastName-firstName-DD-MM-YY-AWS_ACCESS_KEY"
 
-  print "form"+str(request.form)
-  print "files"+str(request.files)
+  #print "form"+str(request.form)
+  #print "files"+str(request.files)
   
   url = "http://cdn.memegenerator.net/instances/500x/50708036.jpg"
-
   eye = request.form["eye"]
   fixationLight = int(request.form["fixationLight"]) 
   
