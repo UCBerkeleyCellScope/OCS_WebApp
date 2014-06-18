@@ -197,34 +197,34 @@ def uploader():
 
   eyeImage_uuid = request.form["eyeImage_uuid"] 
   eyeImage_uuid = eyeImage_uuid + + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
-  eyeImage = EyeImage.query.filter(EyeImage.uuid == eyeImage_uuid).first()
-  print eyeImage
-  if not eyeImage:
-    print "NOT A DUPLICATE IMAGE"
-    if "exam_uuid" in request.form:
-      exam_uuid = request.form["exam_uuid"]
-    else:
-      print "EXAM_UUID INFO IS BROKEN"
-      exam_uuid = "666"
-    exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
-    if exam:
-      print "CORRESPONDING EXAM EXISTS"
-      if("file" in request.files):
-        print "FOUND AN IMAGE!!!!!!!"
-        bucket = getBucket(s3connection,exam.bucket)
-        image = request.files['file']
-        imageName = image.filename
-        url = uploadToS3(bucket,imageName,image)
-        print "S3 URL:" + url   
-      eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
-      exam.eyeImages.append(eyeImage)
-      db.session.add(eyeImage)
-      db.session.commit()
-      return jsonify(status="EyeImage Created")
-    else:
-      return jsonify(status="Something Wrong with Exam")
+  #eyeImage = EyeImage.query.filter(EyeImage.uuid == eyeImage_uuid).first()
+  #print eyeImage
+#if not eyeImage:
+  print "NOT A DUPLICATE IMAGE"
+  if "exam_uuid" in request.form:
+    exam_uuid = request.form["exam_uuid"]
   else:
-    return jsonify(status="EyeImage was a duplicate and was not saved")
+    print "EXAM_UUID INFO IS BROKEN"
+    exam_uuid = "666"
+  exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
+  if exam:
+    print "CORRESPONDING EXAM EXISTS"
+    if("file" in request.files):
+      print "FOUND AN IMAGE!!!!!!!"
+      bucket = getBucket(s3connection,exam.bucket)
+      image = request.files['file']
+      imageName = image.filename
+      url = uploadToS3(bucket,imageName,image)
+      print "S3 URL:" + url   
+    eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
+    exam.eyeImages.append(eyeImage)
+    db.session.add(eyeImage)
+    db.session.commit()
+    return jsonify(status="EyeImage Created")
+  else:
+    return jsonify(status="Something Wrong with Exam")
+#else:
+  #return jsonify(status="EyeImage was a duplicate and was not saved")
   
   #return jsonify(status="An Image Upload was completed")
 
