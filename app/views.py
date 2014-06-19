@@ -7,9 +7,15 @@ from sqlalchemy.util import buffer
 from s3 import uploadToS3, createBucket, getBucket, doesBucketExist
 from datetime import datetime
 import string, random
+from __future__ import print_function
+
 
 global exams_list
 exams_list=[] 
+
+def warning(*objs):
+    print "OMG WARNING GOT CALLED"
+    print("WARNING: ", *objs, file=sys.stderr)
 
 @app.route('/')
 @app.route('/select')
@@ -123,7 +129,6 @@ def exam():
 
     #else:
       #return jsonify(status="Exam was a duplicate and was not saved")
-
 
 @app.route('/eyeImages', methods=['GET'])
 def eyeImage():
