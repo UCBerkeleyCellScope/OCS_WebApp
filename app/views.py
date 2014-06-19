@@ -172,26 +172,36 @@ def uploader():
   #print "files"+str(request.files)
   
   url = "http://cdn.memegenerator.net/instances/500x/50708036.jpg"
-  eye = request.form["eye"]
-  fixationLight = int(request.form["fixationLight"]) 
+  if "eye" in request.form:
+    print "eye was in params"
+    eye = request.form["eye"]
+  else:
+    eye = 'left'
+  if "fixationLight" in request.form:
+    print "fixationLight was in params"
+    fixationLight = int(request.form["fixationLight"]) 
+  else:
+    fixationLight = 5
 
   if eye == 'left':
     eyeBool = 0
   elif eye == 'right': 
     eyeBool = 1
+  print eyeBool
+
 
   print "Before fixationLight"
-  if fixationLight == "0":
+  if fixationLight == 0:
       fixationText = "Center"
-  elif fixationLight == "1":
+  elif fixationLight == 1:
       fixationText = "Top"
-  elif fixationLight == "2":
+  elif fixationLight == 2:
       fixationText = "Bottom"
-  elif fixationLight == "3":
+  elif fixationLight == 3:
       fixationText = "Left"
-  elif fixationLight == "4":
+  elif fixationLight == 4:
       fixationText = "Right"
-  elif fixationLight == "5":
+  elif fixationLight == 5:
       fixationText = "None"
   else: fixationText = "None Specified"
 
