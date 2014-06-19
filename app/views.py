@@ -209,8 +209,9 @@ def uploader():
   #if eye is not "right" or eye is not "left":
     #throw error
 
+  print "Before eyeImage_uuid"  
   eyeImage_uuid = request.form["eyeImage_uuid"] 
-  eyeImage_uuid = eyeImage_uuid + + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+  #eyeImage_uuid = eyeImage_uuid + + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
   
   #Just removed this 1:17 Wed Am to see if Not a duplicate will print for me 
   #eyeImage = EyeImage.query.filter(EyeImage.uuid == eyeImage_uuid).first()
@@ -218,6 +219,7 @@ def uploader():
 #if not eyeImage:
   print "NOT A DUPLICATE IMAGE"
   if "exam_uuid" in request.form:
+    print "exam_uuid was in form"
     exam_uuid = request.form["exam_uuid"]
   else:
     print "EXAM_UUID INFO IS BROKEN"
@@ -231,6 +233,7 @@ def uploader():
     bucket = getBucket(s3connection,exam.bucket)
     image = request.files['file']
     imageName = image.filename
+    print "imageName" + image.filename
     url = uploadToS3(bucket,imageName,image)
     print "S3 URL:" + url   
   eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
