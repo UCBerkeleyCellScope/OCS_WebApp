@@ -4,7 +4,7 @@ from app import app, db, lm, s3connection #,oid
 from forms import LoginForm
 from models import User, ROLE_SPECIALIST, ROLE_ADMIN, EyeImage, Exam
 from sqlalchemy.util import buffer
-from s3 import uploadToS3, createBucket, getBucket
+from s3 import uploadToS3, createBucket, getBucket, doesBucketExist
 from datetime import datetime
 import string, random
 
@@ -106,16 +106,20 @@ def exam():
     bucketName = (yyyymmddHHMM+"-"+exam_uuid).lower()
     print bucketName
 
-    #exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
-    #if not exam:
-
-    #Exact same bucketName is a problem!
-    createBucket(s3connection,bucketName)
-    #include bucketName in Exam model
-    exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName)#date=date)
-    db.session.add(exam)
-    db.session.commit()
-    return jsonify(status="Exam Created")
+    val = doesBucketExist(s3connection,bucketName)
+    if val is False:
+      createBucket(s3connection,bucketName)
+      #include bucketName in Exam model
+      exam = Exam.query.filter(Exam.uuid== exam_uuid).first()  
+      if not exam:
+        exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName)#date=date)
+        db.session.add(exam)
+        db.session.commit()
+        return jsonify(status="Exam Created")
+      else:
+        return jsonify(status="Exam was a duplicate and was not saved")
+    else:
+      return jsonify(status="Exam Bucket Already Created")  
 
     #else:
       #return jsonify(status="Exam was a duplicate and was not saved")
@@ -234,16 +238,18 @@ def uploader():
     bucket = getBucket(s3connection,exam.bucket)
     image = request.files['file']
     imageName = image.filename
-    print "imageName" + image.filename
+    print "imageName " + image.filename
     url = uploadToS3(bucket,imageName,image)
     print "S3 URL:" + url   
   eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
+  print "created object"
   exam.eyeImages.append(eyeImage)
+  print "appended eyeImage"
   db.session.add(eyeImage)
+  print "added eyeImage to session"
   db.session.commit()
+  print "commited the session"
   return jsonify(status="EyeImage Created")
-  
-
   #else:
   #  return jsonify(status="Something Wrong with Exam")
 #else:

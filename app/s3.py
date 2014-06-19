@@ -41,9 +41,12 @@ def uploadToS3(bucket,imageName,image):
   print "uploaded file to S3"
   return url
 
-def getExam(s3connection,mrn,date):
-  bucketName = mrn + '_' + date
-  s3connection.get_bucket(bucketName)
+def doesBucketExist(s3connection,bucketName):
+  bucketExistence = s3connection.lookup(bucketName)
+  if bucketExistence is None:
+    return False
+  else:
+    return True
 
 
   #Go to the bucket
