@@ -25,10 +25,6 @@ def fetch_exams(study_name):
 
     exams = Exam.query.all()
     
-    if exams is not None:
-      for ex in exams:    
-        print str(ex.eyeImages)
-
     if(study_name == "trachoma"):
       patient1= {"firstName": "John", "lastName": "Smith", "mrn":"123", "date": "May 23rd 1990","uuid":8549085094235}
       patient2= {"firstName": "Sally", "lastName": "Johannsen", "mrn":"321", "date": "August 19th 2008","uuid":3209445}
@@ -48,7 +44,7 @@ def fetch_single_exam(study_name,exam_uuid):
     #fetch the patient based on the UUID passed in the URL
     exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
     #return render_template('patient.html',patient = {"firstName": "Willem", "lastName": "Dafoe", "mrn":"150", "date": "December 22th 1947","uuid":6843636})
-    print exam.eyeImages[0].uuid
+
     return render_template('patient.html',exam=exam)
 
 @app.route('/select/<study_name>/<exam_uuid>/<image_uuid>')
@@ -103,12 +99,13 @@ def exam():
       date = "2000-01-01 11:11:11"
 
     d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
-    yyymmdd = d.strftime("%Y-%m-%d")
-    bucketName = (yyymmdd+"-"+ln+"-"+fn+"-"+exam_uuid).lower()
+    yyymmddHHMM = d.strftime("%Y-%m-%d_%H:%M")
+    bucketName = (yyymmddHHMM+"_"+ln+"-"+fn+"-"+exam_uuid).lower()
     
     #exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
     #if not exam:
 
+    #Exact same bucketName is a problem!
     createBucket(s3connection,bucketName)
     #include bucketName in Exam model
     exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName)#date=date)
