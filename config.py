@@ -2,7 +2,9 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__)) #directory of config.py
 
 #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+print "Database URI"+SQLALCHEMY_DATABASE_URI
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')#join is like +
 
 AWS_ACCESS_KEY_ID='AKIAIZJCDD43UTMHGLXQ'
@@ -18,4 +20,4 @@ OPENID_PROVIDERS = [
     { 'name': 'AOL', 'url': 'http://openid.aol.com/<username>' },
     { 'name': 'Flickr', 'url': 'http://www.flickr.com/<username>' },
     { 'name': 'MyOpenID', 'url': 'https://www.myopenid.com' }]
-
+print "bottom of config.py"

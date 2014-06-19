@@ -17,6 +17,7 @@ import s3
 
 #with is like try..finally (finally being clean-up code)
 
+print "started the init script"
 app = Flask(__name__) #application object of class Flask 
 app.config.from_object('config')
 db = SQLAlchemy(app)
@@ -29,6 +30,7 @@ lm.login_view = 'login'
 
 s3connection = s3.connect(app.config['AWS_ACCESS_KEY_ID'], app.config['AWS_SECRET_ACCESS_KEY'])
 
+print "in the init script before importing models"
 from app import views, models
 
 #classes are database models
