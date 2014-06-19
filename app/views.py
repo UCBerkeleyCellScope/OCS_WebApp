@@ -176,19 +176,20 @@ def uploader():
     print "eye was in params"
     eye = request.form["eye"]
   else:
-    eye = 'left'
+    eye = 'leftEye'
   if "fixationLight" in request.form:
     print "fixationLight was in params"
+    print request.form["fixationLight"]
     fixationLight = int(request.form["fixationLight"]) 
   else:
     fixationLight = 5
+    print "fixationLight wasnt there"
 
-  if eye == 'left':
+  if eye == 'leftEye':
     eyeBool = 0
-  elif eye == 'right': 
+  elif eye == 'rightEye': 
     eyeBool = 1
   print eyeBool
-
 
   print "Before fixationLight"
   if fixationLight == 0:
