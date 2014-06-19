@@ -6,6 +6,7 @@ from models import User, ROLE_SPECIALIST, ROLE_ADMIN, EyeImage, Exam
 from sqlalchemy.util import buffer
 from s3 import uploadToS3, createBucket, getBucket
 from datetime import datetime
+import string, random
 
 global exams_list
 exams_list=[] 
@@ -211,7 +212,7 @@ def uploader():
     exam_uuid = "666"
   exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
   #if exam:
-  
+
   print "CORRESPONDING EXAM EXISTS"
   if("file" in request.files):
     print "FOUND AN IMAGE!!!!!!!"
