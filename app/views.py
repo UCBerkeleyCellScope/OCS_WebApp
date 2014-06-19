@@ -174,12 +174,13 @@ def uploader():
   url = "http://cdn.memegenerator.net/instances/500x/50708036.jpg"
   eye = request.form["eye"]
   fixationLight = int(request.form["fixationLight"]) 
-  
+
   if eye == 'left':
     eyeBool = 0
   elif eye == 'right': 
     eyeBool = 1
 
+  print "Before fixationLight"
   if fixationLight == "0":
       fixationText = "Center"
   elif fixationLight == "1":
