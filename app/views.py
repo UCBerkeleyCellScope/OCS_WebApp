@@ -100,9 +100,11 @@ def exam():
       date = "2000-01-01 11:11:11"
 
     d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
-    yyymmddHHMM = d.strftime("%Y-%m-%d-%H-%M")
-    bucketName = (yyymmddHHMM+"-"+ln+"-"+fn+"-"+exam_uuid).lower()
-    
+    print d
+    yyyymmddHHMM = d.strftime("%Y-%m-%d-%H-%M")
+    print yyyymmddHHMM
+    bucketName = (yyyymmddHHMM+"-"+ln+"-"+fn+"-"+exam_uuid).lower()
+    print bucketName
 
     #exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
     #if not exam:
