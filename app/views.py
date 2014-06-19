@@ -103,7 +103,7 @@ def exam():
     print d
     yyyymmddHHMM = d.strftime("%Y-%m-%d-%H-%M")
     print yyyymmddHHMM
-    bucketName = (yyyymmddHHMM+"-"+ln+"-"+fn+"-"+exam_uuid).lower()
+    bucketName = (yyyymmddHHMM+"-"+exam_uuid).lower()
     print bucketName
 
     #exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
