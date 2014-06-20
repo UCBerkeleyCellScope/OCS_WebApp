@@ -1,4 +1,7 @@
 #!/usr/local/bin/python
+
+#Find data model differences in the app.db??
+
 import imp
 from migrate.versioning import api
 from app import db

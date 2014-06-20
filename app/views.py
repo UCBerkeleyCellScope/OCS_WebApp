@@ -3,7 +3,7 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from app import app, db, lm, s3connection #,oid
 from forms import LoginForm
 from models import User, ROLE_SPECIALIST, ROLE_ADMIN, EyeImage, Exam
-from sqlalchemy.util import buffer
+#from sqlalchemy.util import buffer
 from s3 import uploadToS3, createBucket, getBucket, doesBucketExist
 from datetime import datetime
 import string, random
@@ -171,7 +171,6 @@ def uploader():
 
   print "i am not crazy"
   #bucketName derived from "lastName-firstName-DD-MM-YY-AWS_ACCESS_KEY"
-
   #print "form"+str(request.form)
   #print "files"+str(request.files)
   
@@ -180,6 +179,7 @@ def uploader():
     print "eye was in params"
     eye = request.form["eye"]
   else:
+    print "eye wasnt there"
     eye = 'leftEye'
   if "fixationLight" in request.form:
     print "fixationLight was in params"
