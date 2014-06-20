@@ -175,6 +175,8 @@ def uploader():
   #print "files"+str(request.files)
   
   url = "http://cdn.memegenerator.net/instances/500x/50708036.jpg"
+  print "make sure heroku works"
+
   if "eye" in request.form:
     print "eye was in params"
     eye = request.form["eye"]
@@ -232,6 +234,8 @@ def uploader():
   #if exam:
 
   print "CORRESPONDING EXAM EXISTS"
+
+  '''
   if("file" in request.files):
     print "FOUND AN IMAGE!!!!!!!"
     bucket = getBucket(s3connection,exam.bucket)
@@ -240,6 +244,9 @@ def uploader():
     print "imageName " + image.filename
     url = uploadToS3(bucket,imageName,image)
     print "S3 URL:" + url   
+  '''
+
+
   eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
   print "created object"
   exam.eyeImages.append(eyeImage)
