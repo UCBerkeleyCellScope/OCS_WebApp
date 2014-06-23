@@ -192,9 +192,9 @@ def uploader():
     print "fixationLight wasnt there"
 
   if eye == 'leftEye':
-    eyeBool = 0
+    eyeBool = False
   elif eye == 'rightEye': 
-    eyeBool = 1
+    eyeBool = True
   print eyeBool
 
   print "Before fixationLight"
@@ -216,20 +216,26 @@ def uploader():
     #throw error
 
   print "Before eyeImage_uuid"  
-  eyeImage_uuid = request.form["eyeImage_uuid"] 
+
+  if "eyeImage_uuid" in request.form:
+    print "eyeImage uuid in form"
+    eyeImage_uuid = request.form["eyeImage_uuid"] 
+  else:
+    print "eyeImage uuid NOT in form"
+    eyeImage_uuid = "001"
+
   #eyeImage_uuid = eyeImage_uuid + + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
-  
   #Just removed this 1:17 Wed Am to see if Not a duplicate will print for me 
   #eyeImage = EyeImage.query.filter(EyeImage.uuid == eyeImage_uuid).first()
   #print eyeImage
-#if not eyeImage:
+  #if not eyeImage: #This was indented
   print "NOT A DUPLICATE IMAGE"
   if "exam_uuid" in request.form:
     print "exam_uuid was in form"
     exam_uuid = request.form["exam_uuid"]
   else:
     print "EXAM_UUID INFO IS BROKEN"
-    exam_uuid = "666"
+    exam_uuid = "000"
   exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
   #if exam:
 
@@ -246,7 +252,6 @@ def uploader():
     print "S3 URL:" + url   
   '''
 
-
   eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
   print "created object"
   exam.eyeImages.append(eyeImage)
@@ -262,6 +267,11 @@ def uploader():
   #return jsonify(status="EyeImage was a duplicate and was not saved")
   
   #return jsonify(status="An Image Upload was completed")
+
+'''
+@app.route('/psql')
+def psql():
+'''
 
 @app.route('/logout')
 def logout():
