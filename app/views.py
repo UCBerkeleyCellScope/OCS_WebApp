@@ -188,7 +188,7 @@ def uploader():
     print request.form["fixationLight"]
     fixationLight = int(request.form["fixationLight"]) 
   else:
-    fixationLight = 5
+    fixationLight = int(5)
     print "fixationLight wasnt there"
 
   if eye == 'leftEye':
@@ -253,7 +253,7 @@ def uploader():
   
 
   eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
-  print "created object"
+  print eyeImage
   exam.eyeImages.append(eyeImage)
   print "appended eyeImage"
   db.session.add(eyeImage)
