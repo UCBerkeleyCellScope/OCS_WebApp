@@ -150,6 +150,7 @@ def postImage():
       bucket = getBucket(s3connection,exam.bucket)
       print bucket
       image = request.files['file']
+
       imageName = image.filename
       print imageName
       url = uploadToS3(bucket,imageName,image)
@@ -249,6 +250,7 @@ def uploader():
       bucket = getBucket(s3connection,exam.bucket)
       image = request.files['file']
       imageName = image.filename
+      imageName = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
       print "imageName " + image.filename
       url = uploadToS3(bucket,imageName,image)
       print "S3 URL:" + url   
