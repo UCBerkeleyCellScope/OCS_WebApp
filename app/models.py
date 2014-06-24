@@ -53,7 +53,8 @@ class Exam(db.Model):
     eyeImages = db.relationship('EyeImage', backref = 'exam', lazy = 'dynamic')
     bucket = db.Column(db.String(80),unique=True)
     uuid = db.Column(db.String(80),unique=True)
-      #date = db.Column(db.String(40))
+    crazy = db.Column(db.String(80))
+    #date = db.Column(db.String(40))
 
     def __init__(self, firstName, lastName, uuid, bucket):
       self.firstName = firstName
