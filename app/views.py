@@ -4,7 +4,7 @@ from app import app, db, lm, s3connection #,oid
 from forms import LoginForm
 from models import User, ROLE_SPECIALIST, ROLE_ADMIN, EyeImage, Exam
 #from sqlalchemy.util import buffer
-from s3 import uploadToS3, createBucket, getBucket, doesBucketExist
+from s3 import uploadToS3, createBucket, getBucket, doesBucketExist, deleteAllBuckets
 from datetime import datetime
 import string, random
 
@@ -14,8 +14,6 @@ exams_list=[]
 @app.route('/')
 @app.route('/select')
 def select_study():
-    #deleteAll()
-
     study_list = ['Glaucoma','Trachoma','Diabetic Retinopathy']
     return render_template('study_select.html',study_list=study_list)
 
@@ -63,6 +61,7 @@ def deleteAll():
   for eyeImage in eyeImages:
     db.session.delete(eyeImage)
   db.session.commit()
+  deleteAllBuckets(s3connection)
 
 @app.route('/exam', methods=['GET','POST'])
 #Every Time an Exam is uploaded, an exam object is created
@@ -105,10 +104,11 @@ def exam():
     yyyymmddHHMM = d.strftime("%Y-%m-%d-%H-%M")
     print yyyymmddHHMM
     bucketName = (yyyymmddHHMM+"-"+exam_uuid).lower()
-    print bucketName
+    print "BucketName " + bucketName
 
     val = doesBucketExist(s3connection,bucketName)
     if val is False:
+      print "about to create bucket"
       createBucket(s3connection,bucketName)
       #include bucketName in Exam model
       exam = Exam.query.filter(Exam.uuid== exam_uuid).first()  
