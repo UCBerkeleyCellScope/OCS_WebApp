@@ -48,6 +48,15 @@ def doesBucketExist(s3connection,bucketName):
   else:
     return True
 
+def deleteAllBuckets(s3connection):
+  all_buckets = s3connection.get_all_buckets()
+
+  for singleBucket in all_buckets:
+    full_bucket = s3connection.get_bucket(singleBucket)
+    for key in full_bucket.list():
+      print key
+      key.delete()
+    s3connection.delete_bucket(singleBucket)
 
   #Go to the bucket
     #Get the sub-bucket
