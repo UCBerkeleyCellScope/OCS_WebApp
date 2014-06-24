@@ -193,9 +193,11 @@ def uploader():
     print "fixationLight wasnt there"
 
   if "date" in request.form:
-    print "date in form"
+    date = request.form["date"]
   else:
+    date = "2000-01-01 11:11:11"
 
+  d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
 
   if eye == 'leftEye':
     eyeBool = False
@@ -256,7 +258,7 @@ def uploader():
       imageName = image.filename
       url = uploadToS3(bucket,imageName,image)
       print "S3 URL:" + url   
-      eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
+      eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight,image_date=date)
       print eyeImage
       exam.eyeImages.append(eyeImage)
       print "appended eyeImage"

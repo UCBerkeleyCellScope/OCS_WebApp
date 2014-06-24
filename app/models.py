@@ -79,16 +79,16 @@ class EyeImage(db.Model):
     imageURL = db.Column(db.String(200))
     fixationLight = db.Column(db.SmallInteger)
     exam_id = db.Column(db.Integer, db.ForeignKey('exam.id')) #demonstrates the linking
-    #thumbnail = db.Column(db.LargeBinary)
+    thumbnail = db.Column(db.LargeBinary)
     imageKey = db.Column(db.String(80))
     uuid = db.Column(db.String(80),unique=True)
 
-    def __init__(self, imageURL, uuid, eye, fixationLight):
+    def __init__(self, imageURL, uuid, eye, fixationLight,image_date):
       self.imageURL = imageURL
       self.uuid = uuid
       self.eye = eye
       self.fixationLight = fixationLight
-    
+      self.image_date = image_date
 
     '''
     def __init__(self, imageURL=None, uuid=None, eye=None, fixationLight=None, thumbnail=None):
