@@ -7,6 +7,8 @@ from models import User, ROLE_SPECIALIST, ROLE_ADMIN, EyeImage, Exam
 from s3 import uploadToS3, createBucket, getBucket, doesBucketExist, deleteAllBuckets
 from datetime import datetime
 import string, random
+import traceback, sys
+
 
 global exams_list
 exams_list=[] 
@@ -113,7 +115,7 @@ def exam():
       #include bucketName in Exam model
       exam = Exam.query.filter(Exam.uuid== exam_uuid).first()  
       if not exam:
-        exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName)#date=date)
+        exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName)#, date=d)
         db.session.add(exam)
         db.session.commit()
         return jsonify(status="Exam Created")
@@ -193,7 +195,7 @@ def uploader():
     fixationLight = int(5)
     print "fixationLight wasnt there"
 
-  '''
+  
   if "date" in request.form:
     print "Found a date"
     date = request.form["date"]
@@ -202,8 +204,8 @@ def uploader():
     date = "2000-01-01 11:11:11"
 
   d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
-  print "Date: " + d
-  '''
+  print d
+  
 
   if eye == 'leftEye':
     eyeBool = False
@@ -264,14 +266,14 @@ def uploader():
       imageName = image.filename
       url = uploadToS3(bucket,imageName,image)
       print "S3 URL:" + url   
-      eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
-      print eyeImage
-      exam.eyeImages.append(eyeImage)
-      print "appended eyeImage"
-      db.session.add(eyeImage)
-      print "added eyeImage to session"
-      db.session.commit()
-      print "commited the session"
+    eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight,image_date=d)
+    print eyeImage
+    exam.eyeImages.append(eyeImage)
+    print "appended eyeImage"
+    db.session.add(eyeImage)
+    print "added eyeImage to session"
+    db.session.commit()
+    print "commited the session"
 
   except:
     print "Exception thrown in S3 upload sequence"
