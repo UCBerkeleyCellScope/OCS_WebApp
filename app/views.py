@@ -242,6 +242,7 @@ def uploader():
 
   print "CORRESPONDING EXAM EXISTS"
 
+  '''
   if("file" in request.files):
     print "FOUND AN IMAGE!!!!!!!"
     bucket = getBucket(s3connection,exam.bucket)
@@ -250,7 +251,8 @@ def uploader():
     print "imageName " + image.filename
     url = uploadToS3(bucket,imageName,image)
     print "S3 URL:" + url   
-  
+  '''
+
   eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
   print eyeImage
   exam.eyeImages.append(eyeImage)
