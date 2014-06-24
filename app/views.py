@@ -284,6 +284,7 @@ def uploader():
     print "added eyeImage to session"
     db.session.commit()
     print "commited the session"
+    return jsonify(status="EyeImage Created")
 
   except:
     print "Exception thrown in S3 upload sequence"
@@ -291,8 +292,9 @@ def uploader():
     #print traceback.print_exc(file=sys.stdout)
     print traceback.print_exc()
     print '-'*60
+    return jsonify(status="Upload Failed")
 
-  return jsonify(status="EyeImage Created")
+  
   #else:
   #  return jsonify(status="Something Wrong with Exam")
 #else:
