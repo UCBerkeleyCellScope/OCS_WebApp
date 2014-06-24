@@ -222,7 +222,7 @@ def uploader():
     eyeImage_uuid = request.form["eyeImage_uuid"] 
   else:
     print "eyeImage uuid NOT in form"
-    eyeImage_uuid = "001"
+    eyeImage_uuid = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
 
   #eyeImage_uuid = eyeImage_uuid + + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
   #Just removed this 1:17 Wed Am to see if Not a duplicate will print for me 
@@ -238,10 +238,10 @@ def uploader():
     exam_uuid = "000"
   exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
   #if exam:
+  print exam
 
   print "CORRESPONDING EXAM EXISTS"
 
-  
   if("file" in request.files):
     print "FOUND AN IMAGE!!!!!!!"
     bucket = getBucket(s3connection,exam.bucket)
@@ -251,7 +251,6 @@ def uploader():
     url = uploadToS3(bucket,imageName,image)
     print "S3 URL:" + url   
   
-
   eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
   print eyeImage
   exam.eyeImages.append(eyeImage)
