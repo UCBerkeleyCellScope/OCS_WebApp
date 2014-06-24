@@ -76,7 +76,7 @@ class EyeImage(db.Model):
     image_date = db.Column(db.DateTime) #use to be time
     technician = db.Column(db.String(40))
     eye = db.Column(db.Boolean)
-    imageURL = db.Column(db.String(120))
+    imageURL = db.Column(db.String(200))
     fixationLight = db.Column(db.SmallInteger)
     exam_id = db.Column(db.Integer, db.ForeignKey('exam.id')) #demonstrates the linking
     #thumbnail = db.Column(db.LargeBinary)
