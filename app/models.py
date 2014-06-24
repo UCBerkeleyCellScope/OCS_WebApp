@@ -14,6 +14,7 @@ UNVIEWED= 0
 #   print e.exam_date
 # models.User.query.order_by('username desc').all()
 
+print "!!!!!!!!!!!!!!! MODELS.PY !!!!!!!!!"
 
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
@@ -78,7 +79,7 @@ class EyeImage(db.Model):
     imageURL = db.Column(db.String(120))
     fixationLight = db.Column(db.SmallInteger)
     exam_id = db.Column(db.Integer, db.ForeignKey('exam.id')) #demonstrates the linking
-    thumbnail = db.Column(db.LargeBinary)
+    #thumbnail = db.Column(db.LargeBinary)
     imageKey = db.Column(db.String(80))
     uuid = db.Column(db.String(80),unique=True)
 
@@ -104,5 +105,5 @@ class EyeImage(db.Model):
     '''
 
     def __repr__(self):
-        #return '<EyeImage UUID:{!s} Eye:{!s} Fixation:{!s} EyeImage UUID:{!s}>'.format(self.uuid,self.eye,self.fixationLight,self.uuid)
-        return "test"
+        return '<EyeImage UUID:{!s} Eye:{!s} Fixation:{!s} ImageURL:{!s}>'.format(self.uuid,self.eye,self.fixationLight,self.imageURL)
+        #return "test"
