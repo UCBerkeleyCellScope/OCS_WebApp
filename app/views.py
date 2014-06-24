@@ -87,12 +87,12 @@ def exam():
     #return "exams GET"
 
   else:
-    if("firstName" in request.form and not request.form["firstName"]):
+    if("firstName" in request.form and request.form["firstName"]):
       fn = request.form["firstName"]
       print fn
     else:
       fn = "Place"
-    if("lastName" in request.form and not request.form["lastName"]):
+    if("lastName" in request.form and request.form["lastName"]):
       ln = request.form["lastName"]
     else:
       ln = "Holder"
