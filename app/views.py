@@ -260,7 +260,7 @@ def uploader():
       imageName = image.filename
       url = uploadToS3(bucket,imageName,image)
       print "S3 URL:" + url   
-      eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight,image_date=None)
+      eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight,image_date=d)
       print eyeImage
       exam.eyeImages.append(eyeImage)
       print "appended eyeImage"
