@@ -192,6 +192,7 @@ def uploader():
     fixationLight = int(5)
     print "fixationLight wasnt there"
 
+  '''
   if "date" in request.form:
     print "Found a date"
     date = request.form["date"]
@@ -201,6 +202,7 @@ def uploader():
 
   d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
   print "Date: " + d
+  '''
 
   if eye == 'leftEye':
     eyeBool = False
