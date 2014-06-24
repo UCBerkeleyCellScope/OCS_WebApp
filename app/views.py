@@ -19,6 +19,12 @@ def select_study():
     study_list = ['Glaucoma','Trachoma','Diabetic Retinopathy']
     return render_template('study_select.html',study_list=study_list)
 
+@app.route('/deleteAll')
+def purge():
+    deleteAll()
+    study_list = ['Glaucoma','Trachoma','Diabetic Retinopathy']
+    return render_template('study_select.html',study_list=study_list)
+
 @app.route('/select/<study_name>')
 def fetch_exams(study_name):
     #Return all Exams for which STUDY_NAME == study_name
