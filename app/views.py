@@ -201,68 +201,73 @@ def uploader():
     fixationLight = int(5)
     print "fixationLight wasnt there"
 
-  
-  if "date" in request.form:
-    print "Found a date"
-    date = request.form["date"]
-  else:
-    print "No date found"
-    date = "2000-01-01 11:11:11"
+  try:
+    if "date" in request.form:
+      print "Found a date"
+      date = request.form["date"]
+    else:
+      print "No date found"
+      date = "2000-01-01 11:11:11"
 
-  d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
-  print d
-  
+    d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+    #print d
+    
+    if eye == 'leftEye':
+      eyeBool = False
+    elif eye == 'rightEye': 
+      eyeBool = True
+    print eyeBool
 
-  if eye == 'leftEye':
-    eyeBool = False
-  elif eye == 'rightEye': 
-    eyeBool = True
-  print eyeBool
+    print "Before fixationLight"
+    if fixationLight == 0:
+        fixationText = "Center"
+    elif fixationLight == 1:
+        fixationText = "Top"
+    elif fixationLight == 2:
+        fixationText = "Bottom"
+    elif fixationLight == 3:
+        fixationText = "Left"
+    elif fixationLight == 4:
+        fixationText = "Right"
+    elif fixationLight == 5:
+        fixationText = "None"
+    else: fixationText = "None Specified"
 
-  print "Before fixationLight"
-  if fixationLight == 0:
-      fixationText = "Center"
-  elif fixationLight == 1:
-      fixationText = "Top"
-  elif fixationLight == 2:
-      fixationText = "Bottom"
-  elif fixationLight == 3:
-      fixationText = "Left"
-  elif fixationLight == 4:
-      fixationText = "Right"
-  elif fixationLight == 5:
-      fixationText = "None"
-  else: fixationText = "None Specified"
+    #if eye is not "right" or eye is not "left":
+      #throw error
 
-  #if eye is not "right" or eye is not "left":
-    #throw error
+    print "Before eyeImage_uuid"  
 
-  print "Before eyeImage_uuid"  
+    if "eyeImage_uuid" in request.form:
+      print "eyeImage uuid in form"
+      eyeImage_uuid = request.form["eyeImage_uuid"] 
+    else:
+      print "eyeImage uuid NOT in form"
+      eyeImage_uuid = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
 
-  if "eyeImage_uuid" in request.form:
-    print "eyeImage uuid in form"
-    eyeImage_uuid = request.form["eyeImage_uuid"] 
-  else:
-    print "eyeImage uuid NOT in form"
-    eyeImage_uuid = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+    #eyeImage_uuid = eyeImage_uuid + + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+    #Just removed this 1:17 Wed Am to see if Not a duplicate will print for me 
+    #eyeImage = EyeImage.query.filter(EyeImage.uuid == eyeImage_uuid).first()
+    #print eyeImage
+    #if not eyeImage: #This was indented
+    print "NOT A DUPLICATE IMAGE"
+    if "exam_uuid" in request.form:
+      print "exam_uuid was in form"
+      exam_uuid = request.form["exam_uuid"]
+    else:
+      print "EXAM_UUID INFO IS BROKEN"
+      exam_uuid = Exam.query.limit(1).all()[0].uuid
+    exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
+    #if exam:
+    print exam
+    print "CORRESPONDING EXAM EXISTS"
+  except:
+    print "Exception thrown PRIOR TO S3 CALL"
+    print '-'*60
+    #print traceback.print_exc(file=sys.stdout)
+    print traceback.print_exc()
+    print '-'*60
 
-  #eyeImage_uuid = eyeImage_uuid + + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
-  #Just removed this 1:17 Wed Am to see if Not a duplicate will print for me 
-  #eyeImage = EyeImage.query.filter(EyeImage.uuid == eyeImage_uuid).first()
-  #print eyeImage
-  #if not eyeImage: #This was indented
-  print "NOT A DUPLICATE IMAGE"
-  if "exam_uuid" in request.form:
-    print "exam_uuid was in form"
-    exam_uuid = request.form["exam_uuid"]
-  else:
-    print "EXAM_UUID INFO IS BROKEN"
-    exam_uuid = Exam.query.limit(1).all()[0].uuid
-  exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
-  #if exam:
-  print exam
-
-  print "CORRESPONDING EXAM EXISTS"
 
   try: 
     if("file" in request.files):
