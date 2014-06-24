@@ -264,7 +264,8 @@ def uploader():
   except:
     print "Exception thrown in S3 upload sequence"
     print '-'*60
-    print traceback.print_exc(file=sys.stdout)
+    #print traceback.print_exc(file=sys.stdout)
+    print traceback.print_exc()
     print '-'*60
 
   return jsonify(status="EyeImage Created")
