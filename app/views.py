@@ -252,21 +252,21 @@ def uploader():
       print "imageName " + image.filename
       url = uploadToS3(bucket,imageName,image)
       print "S3 URL:" + url   
-  
+      eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
+      print eyeImage
+      exam.eyeImages.append(eyeImage)
+      print "appended eyeImage"
+      db.session.add(eyeImage)
+      print "added eyeImage to session"
+      db.session.commit()
+      print "commited the session"
+
   except:
     print "Exception thrown in S3 upload sequence"
     print '-'*60
     print traceback.print_exc(file=sys.stdout)
     print '-'*60
 
-  eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
-  print eyeImage
-  exam.eyeImages.append(eyeImage)
-  print "appended eyeImage"
-  db.session.add(eyeImage)
-  print "added eyeImage to session"
-  db.session.commit()
-  print "commited the session"
   return jsonify(status="EyeImage Created")
   #else:
   #  return jsonify(status="Something Wrong with Exam")
