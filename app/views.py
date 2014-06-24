@@ -242,16 +242,22 @@ def uploader():
 
   print "CORRESPONDING EXAM EXISTS"
 
-  '''
-  if("file" in request.files):
-    print "FOUND AN IMAGE!!!!!!!"
-    bucket = getBucket(s3connection,exam.bucket)
-    image = request.files['file']
-    imageName = image.filename
-    print "imageName " + image.filename
-    url = uploadToS3(bucket,imageName,image)
-    print "S3 URL:" + url   
-  '''
+
+  try: 
+    if("file" in request.files):
+      print "FOUND AN IMAGE!!!!!!!"
+      bucket = getBucket(s3connection,exam.bucket)
+      image = request.files['file']
+      imageName = image.filename
+      print "imageName " + image.filename
+      url = uploadToS3(bucket,imageName,image)
+      print "S3 URL:" + url   
+  
+  except:
+    print "Exception thrown in S3 upload sequence"
+    print '-'*60
+    print traceback.print_exc(file=sys.stdout)
+    print '-'*60
 
   eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
   print eyeImage
