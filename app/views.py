@@ -235,7 +235,7 @@ def uploader():
     exam_uuid = request.form["exam_uuid"]
   else:
     print "EXAM_UUID INFO IS BROKEN"
-    exam_uuid = "000"
+    exam_uuid = Exam.query.limit(1).all()[0].uuid
   exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
   #if exam:
   print exam
