@@ -80,18 +80,19 @@ def exam():
     #return "exams GET"
 
   else:
-    if("firstName" in request.form):
+    if("firstName" in request.form and not request.form["firstName"]):
       fn = request.form["firstName"]
       print fn
     else:
       fn = "Place"
-    if("lastName" in request.form):
+    if("lastName" in request.form and not request.form["lastName"]):
       ln = request.form["lastName"]
     else:
       ln = "Holder"
     if("exam_uuid" in request.form):
       exam_uuid = request.form["exam_uuid"]
     else:
+      print "PROBLEM WITH EXAM UUID"
       exam_uuid = "666"
     if("date" in request.form):      
       date = request.form["date"]
