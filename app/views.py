@@ -192,6 +192,11 @@ def uploader():
     fixationLight = int(5)
     print "fixationLight wasnt there"
 
+  if "date" in request.form:
+    print "date in form"
+  else:
+
+
   if eye == 'leftEye':
     eyeBool = False
   elif eye == 'rightEye': 
@@ -243,15 +248,12 @@ def uploader():
 
   print "CORRESPONDING EXAM EXISTS"
 
-
   try: 
     if("file" in request.files):
       print "FOUND AN IMAGE!!!!!!!"
       bucket = getBucket(s3connection,exam.bucket)
       image = request.files['file']
       imageName = image.filename
-      imageName = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(1))
-      print "imageName " + image.filename
       url = uploadToS3(bucket,imageName,image)
       print "S3 URL:" + url   
       eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
