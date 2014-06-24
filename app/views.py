@@ -200,6 +200,7 @@ def uploader():
     date = "2000-01-01 11:11:11"
 
   d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+  print "Date: " + d
 
   if eye == 'leftEye':
     eyeBool = False
@@ -260,7 +261,7 @@ def uploader():
       imageName = image.filename
       url = uploadToS3(bucket,imageName,image)
       print "S3 URL:" + url   
-      eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight,image_date=d)
+      eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight)
       print eyeImage
       exam.eyeImages.append(eyeImage)
       print "appended eyeImage"
