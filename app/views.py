@@ -257,10 +257,6 @@ def uploader():
     else:
       print "EXAM_UUID INFO IS BROKEN"
       exam_uuid = Exam.query.limit(1).all()[0].uuid
-    exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
-    #if exam:
-    print exam
-    print "CORRESPONDING EXAM EXISTS"
   except:
     print "Exception thrown PRIOR TO S3 CALL"
     print '-'*60
@@ -270,6 +266,9 @@ def uploader():
 
 
   try: 
+    exam = Exam.query.filter(Exam.uuid== exam_uuid).first()
+    if not exam:
+      return jsonify(status="Exam UUID corrupted, Exam does not exist")
     if("file" in request.files):
       print "FOUND AN IMAGE!!!!!!!"
       bucket = getBucket(s3connection,exam.bucket)
