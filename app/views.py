@@ -47,16 +47,19 @@ def fetch_exams(study_name):
 
 @app.route('/select/<study_name>/<exam_uuid>',methods=['POST','GET'])
 def fetch_single_exam(study_name,exam_uuid):
-    exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
+    
 
     if(request.method == 'POST'): 
+      exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
       if "diagnosis" in request.form:
-        print "diagnosis Found"  
+        print "diagnosis Found"
+        print  request.form["diagnosis"] 
         exam.diagnosis = request.form["diagnosis"]
         db.session.commit()
       else:
         print "NO DIAGNOSIS FOUND"
 
+    exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
     return render_template('patient.html',exam=exam)
 
     #fetch the patient based on the UUID passed in the URL
