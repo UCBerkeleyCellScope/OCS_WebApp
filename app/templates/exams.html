@@ -19,7 +19,7 @@
 
   {% for exam  in exams_list %}  
     {%set url_param = exam["uuid"]|string %}
-    {%set url_path = request.path+"/"+url_param %}
+    {%set url_path = request.path+url_param %}
 
     <tr class='clickableRow' href="{{url_path}}">       
         <td >       
