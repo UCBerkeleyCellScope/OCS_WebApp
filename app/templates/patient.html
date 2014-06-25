@@ -28,14 +28,14 @@
       <p> {{exam.uuid}} </p>
     </td>
     <td>
-      <p> {{exam.exam_date.strftime('%b %d %Y')}} </p>
+      <p> {{exam.exam_date.strftime('%b %d %Y %I:%M:%S %p')}} </p>
     </td>
   </tr>
 
   {% for eyeImage in exam.eyeImages %}
 
     {%set url_param = eyeImage.uuid %}
-    {%set url_path = request.path+"/"+url_param %}
+    {%set url_path = request.path+url_param %}
 
     <div class="col-lg-2 col-sm-3 col-xs-4">
         <a href="{{url_path}}">
