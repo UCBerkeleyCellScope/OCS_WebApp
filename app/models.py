@@ -82,13 +82,16 @@ class EyeImage(db.Model):
     thumbnail = db.Column(db.LargeBinary)
     imageKey = db.Column(db.String(80))
     uuid = db.Column(db.String(80),unique=True)
+    eyeString = db.Column(db.String(40))
+    fixationText = db.Column(db.String(40))
 
-    def __init__(self, imageURL, uuid, eye, fixationLight):
+    def __init__(self, imageURL, uuid, eyeString, fixationText, image_date):
       self.imageURL = imageURL
       self.uuid = uuid
-      self.eye = eye
-      self.fixationLight = fixationLight
-      
+      self.eyeString = eyeString
+      self.fixationText = fixationText
+      self.image_date = image_date
+
     '''
     def __init__(self, imageURL=None, uuid=None, eye=None, fixationLight=None, thumbnail=None):
       self.imageURL = imageURL
