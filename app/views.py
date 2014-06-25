@@ -14,7 +14,7 @@ global exams_list
 exams_list=[] 
 
 @app.route('/')
-@app.route('/select')
+@app.route('/select/')
 def select_study():
     study_list = ['Glaucoma','Trachoma','Diabetic Retinopathy']
     return render_template('study_select.html',study_list=study_list)
@@ -25,7 +25,7 @@ def purge():
     study_list = ['Glaucoma','Trachoma','Diabetic Retinopathy']
     return render_template('study_select.html',study_list=study_list)
 
-@app.route('/select/<study_name>')
+@app.route('/select/<study_name>/')
 def fetch_exams(study_name):
     #Return all Exams for which STUDY_NAME == study_name
 
@@ -45,7 +45,7 @@ def fetch_exams(study_name):
     exams_list=[patient1,patient2,patient3]
     return render_template('exams.html', exams_list=exams_list, exams = exams)
 
-@app.route('/select/<study_name>/<exam_uuid>',methods=['POST','GET'])
+@app.route('/select/<study_name>/<exam_uuid>/',methods=['POST','GET'])
 def fetch_single_exam(study_name,exam_uuid):
     
 
@@ -66,7 +66,7 @@ def fetch_single_exam(study_name,exam_uuid):
     #exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
     #return render_template('patient.html',patient = {"firstName": "Willem", "lastName": "Dafoe", "mrn":"150", "date": "December 22th 1947","uuid":6843636})
     
-@app.route('/select/<study_name>/<exam_uuid>/<image_uuid>')
+@app.route('/select/<study_name>/<exam_uuid>/<image_uuid>/')
 def fetch_Single_image(study_name,exam_uuid,image_uuid):
     eyeImage = EyeImage.query.filter(EyeImage.uuid == image_uuid).first()
     #print eyeImage
