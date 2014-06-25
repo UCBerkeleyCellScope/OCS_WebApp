@@ -57,12 +57,12 @@ class Exam(db.Model):
     crazy = db.Column(db.String(80))
     #date = db.Column(db.String(40))
 
-    def __init__(self, firstName, lastName, uuid, bucket):
+    def __init__(self, firstName, lastName, uuid, bucket,exam_date):
       self.firstName = firstName
       self.lastName = lastName
       self.uuid= uuid
       self.bucket=bucket
-      #self.date=date
+      self.exam_date=exam_date
 
     def __repr__(self):
         #return '<Exam %r>' % (self.id)
@@ -83,13 +83,12 @@ class EyeImage(db.Model):
     imageKey = db.Column(db.String(80))
     uuid = db.Column(db.String(80),unique=True)
 
-    def __init__(self, imageURL, uuid, eye, fixationLight,image_date):
+    def __init__(self, imageURL, uuid, eye, fixationLight):
       self.imageURL = imageURL
       self.uuid = uuid
       self.eye = eye
       self.fixationLight = fixationLight
-      self.image_date = image_date
-
+      
     '''
     def __init__(self, imageURL=None, uuid=None, eye=None, fixationLight=None, thumbnail=None):
       self.imageURL = imageURL

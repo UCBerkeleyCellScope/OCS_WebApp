@@ -121,7 +121,7 @@ def exam():
       #include bucketName in Exam model
       exam = Exam.query.filter(Exam.uuid== exam_uuid).first()  
       if not exam:
-        exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName)#, date=d)
+        exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName, exam_date=d)
         db.session.add(exam)
         db.session.commit()
         return jsonify(status="Exam Created")
