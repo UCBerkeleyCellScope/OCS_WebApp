@@ -60,7 +60,7 @@
           <p> {{exam.uuid}} </p>
         </td>
         <td>
-          <p> {{exam.exam_date.strftime('%b %d %Y')}} </p>
+          <p>  {{exam.exam_date.strftime('%b %d %Y %I:%M:%S %p')}}</p>
         </td>
     </tr>
   {%endfor%}
