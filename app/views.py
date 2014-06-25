@@ -53,6 +53,7 @@ def fetch_single_exam(study_name,exam_uuid):
       if "diagnosis" in request.form:
         print "diagnosis Found"  
         exam.diagnosis = request.form["diagnosis"]
+        db.session.commit()
       else:
         print "NO DIAGNOSIS FOUND"
 
@@ -62,18 +63,6 @@ def fetch_single_exam(study_name,exam_uuid):
     #exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
     #return render_template('patient.html',patient = {"firstName": "Willem", "lastName": "Dafoe", "mrn":"150", "date": "December 22th 1947","uuid":6843636})
     
-'''
-@app.route('/select/<study_name>/<exam_uuid>/diagnosis', methods=['POST'])
-def update_diagnosis(study_name,exam_uuid):
-    exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
-    if "diagnosis" in request.form:
-      print "diagnosis Found"  
-      exam.diagnosis = request.form["diagnosis"]
-    else:
-      print "NO DIAGNOSIS FOUND"
-    return render_template('patient.html',exam=exam)# ALSO INCLUDE A MESSAGE: DIAGNOSIS SAVED
-'''
-
 @app.route('/select/<study_name>/<exam_uuid>/<image_uuid>')
 def fetch_Single_image(study_name,exam_uuid,image_uuid):
     eyeImage = EyeImage.query.filter(EyeImage.uuid == image_uuid).first()
