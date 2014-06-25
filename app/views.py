@@ -45,13 +45,24 @@ def fetch_exams(study_name):
     exams_list=[patient1,patient2,patient3]
     return render_template('exams.html', exams_list=exams_list, exams = exams)
 
-@app.route('/select/<study_name>/<exam_uuid>')
+@app.route('/select/<study_name>/<exam_uuid>',methods=['POST','GET'])
 def fetch_single_exam(study_name,exam_uuid):
-    #fetch the patient based on the UUID passed in the URL
     exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
-    #return render_template('patient.html',patient = {"firstName": "Willem", "lastName": "Dafoe", "mrn":"150", "date": "December 22th 1947","uuid":6843636})
+
+    if(request.method == 'POST'): 
+      if "diagnosis" in request.form:
+        print "diagnosis Found"  
+        exam.diagnosis = request.form["diagnosis"]
+      else:
+        print "NO DIAGNOSIS FOUND"
+
     return render_template('patient.html',exam=exam)
 
+    #fetch the patient based on the UUID passed in the URL
+    #exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
+    #return render_template('patient.html',patient = {"firstName": "Willem", "lastName": "Dafoe", "mrn":"150", "date": "December 22th 1947","uuid":6843636})
+    
+'''
 @app.route('/select/<study_name>/<exam_uuid>/diagnosis', methods=['POST'])
 def update_diagnosis(study_name,exam_uuid):
     exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
@@ -61,7 +72,7 @@ def update_diagnosis(study_name,exam_uuid):
     else:
       print "NO DIAGNOSIS FOUND"
     return render_template('patient.html',exam=exam)# ALSO INCLUDE A MESSAGE: DIAGNOSIS SAVED
-
+'''
 
 @app.route('/select/<study_name>/<exam_uuid>/<image_uuid>')
 def fetch_Single_image(study_name,exam_uuid,image_uuid):
