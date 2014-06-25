@@ -212,9 +212,9 @@ def uploader():
     d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
     #print d
     
-    if eye == 'leftEye':
+    if eye == 'OD': #was LEFT
       eyeBool = False
-    elif eye == 'rightEye': 
+    elif eye == 'OS':  # was RIGHT
       eyeBool = True
     print eyeBool
 
