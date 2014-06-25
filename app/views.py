@@ -50,7 +50,6 @@ def fetch_single_exam(study_name,exam_uuid):
     #fetch the patient based on the UUID passed in the URL
     exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
     #return render_template('patient.html',patient = {"firstName": "Willem", "lastName": "Dafoe", "mrn":"150", "date": "December 22th 1947","uuid":6843636})
-
     return render_template('patient.html',exam=exam)
 
 @app.route('/select/<study_name>/<exam_uuid>/<image_uuid>')
@@ -276,7 +275,7 @@ def uploader():
       imageName = image.filename
       url = uploadToS3(bucket,imageName,image)
       print "S3 URL:" + url   
-    eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eye=eyeBool,fixationLight=fixationLight,image_date=d)
+    eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eyeString=eye,fixationText=fixationText,image_date=d)
     print eyeImage
     exam.eyeImages.append(eyeImage)
     print "appended eyeImage"
