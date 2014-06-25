@@ -52,6 +52,17 @@ def fetch_single_exam(study_name,exam_uuid):
     #return render_template('patient.html',patient = {"firstName": "Willem", "lastName": "Dafoe", "mrn":"150", "date": "December 22th 1947","uuid":6843636})
     return render_template('patient.html',exam=exam)
 
+@app.route('/select/<study_name>/<exam_uuid>/diagnosis', methods=['POST'])
+def update_diagnosis(study_name,exam_uuid):
+    exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
+    if "diagnosis" in request.form:
+      print "diagnosis Found"  
+      exam.diagnosis = request.form["diagnosis"]
+    else:
+      print "NO DIAGNOSIS FOUND"
+    return render_template('patient.html',exam=exam)# ALSO INCLUDE A MESSAGE: DIAGNOSIS SAVED
+
+
 @app.route('/select/<study_name>/<exam_uuid>/<image_uuid>')
 def fetch_Single_image(study_name,exam_uuid,image_uuid):
     eyeImage = EyeImage.query.filter(EyeImage.uuid == image_uuid).first()
@@ -218,17 +229,17 @@ def uploader():
     print eyeBool
 
     print "Before fixationLight"
-    if fixationLight == 0:
+    if fixationLight == 1:
         fixationText = "Center"
-    elif fixationLight == 1:
-        fixationText = "Top"
     elif fixationLight == 2:
-        fixationText = "Bottom"
+        fixationText = "Top"
     elif fixationLight == 3:
-        fixationText = "Left"
+        fixationText = "Bottom"
     elif fixationLight == 4:
-        fixationText = "Right"
+        fixationText = "Left"
     elif fixationLight == 5:
+        fixationText = "Right"
+    elif fixationLight == 6:
         fixationText = "None"
     else: fixationText = "None Specified"
 
