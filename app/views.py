@@ -13,7 +13,6 @@ import traceback, sys
 global exams_list
 exams_list=[] 
 
-@app.route('/index')
 @app.route('/')
 @app.route('/select/')
 def select_study():
@@ -369,7 +368,6 @@ def before_request():
     g.user = current_user #current_user is a global variable set by Flask-Login
     #print g.user.username
 
-'''
 @app.route('/index')
 @login_required
 def index():
@@ -397,7 +395,7 @@ def index():
 
     #Has the user clicked a particular exam? If so, they need to let 
     #everyone else know how much space they need 
-'''
+
 
 
 @app.route('/test', methods=['GET','POST'])
