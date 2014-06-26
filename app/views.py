@@ -30,6 +30,7 @@ def fetch_exams(study_name):
     #Return all Exams for which STUDY_NAME == study_name
 
     exams = Exam.query.order_by(Exam.exam_date)
+    exams = exams.reverse()
     
     '''
     if(study_name == "trachoma"):
@@ -45,9 +46,11 @@ def fetch_exams(study_name):
 
     #global exams_list
     #exams_list=[patient1,patient2,patient3]
+
     for e in exams:
       e.exam_date = utc_to_local(e.exam_date)
       print e.exam_date
+    
     return render_template('exams.html', exams = exams)
 
 def utc_to_local(utc_dt):
