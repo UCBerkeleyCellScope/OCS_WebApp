@@ -31,26 +31,9 @@ def fetch_exams(study_name):
 
     exams = Exam.query.order_by(Exam.exam_date.desc())
     
-    '''
-    if(study_name == "trachoma"):
-      patient1= {"firstName": "John", "lastName": "Smith", "mrn":"123", "date": "May 23rd 1990","uuid":8549085094235}
-      patient2= {"firstName": "Sally", "lastName": "Johannsen", "mrn":"321", "date": "August 19th 2008","uuid":3209445}
-      patient3= {"firstName": "Bruce", "lastName": "Williams", "mrn":"007", "date": "June 20th 1987","uuid":8543758943}
-
-    else:
-      patient1= {"firstName": "Martin", "lastName": "Scorcese", "mrn":"678", "date": "May 99rd 1997","uuid":804525211}
-      patient2= {"firstName": "Scarlet", "lastName": "Jenkins", "mrn":"1337", "date": "July 19th 2108","uuid":96592662}
-      patient3= {"firstName": "Willem", "lastName": "Dafoe", "mrn":"150", "date": "December 22th 1947","uuid":6843636}
-    '''
-
-    #global exams_list
-    #exams_list=[patient1,patient2,patient3]
-
-    '''
     for e in exams:
       e.exam_date = utc_to_local(e.exam_date)
       print e.exam_date
-    '''
 
     return render_template('exams.html', exams = exams)
 
