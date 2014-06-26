@@ -29,8 +29,7 @@ def purge():
 def fetch_exams(study_name):
     #Return all Exams for which STUDY_NAME == study_name
 
-    exams = Exam.query.order_by(Exam.exam_date)
-    exams = exams.reverse()
+    exams = Exam.query.order_by(Exam.exam_date.desc())
     
     '''
     if(study_name == "trachoma"):
