@@ -13,6 +13,7 @@ import traceback, sys
 global exams_list
 exams_list=[] 
 
+@app.route('/index')
 @app.route('/')
 @app.route('/select/')
 def select_study():
@@ -47,10 +48,12 @@ def fetch_exams(study_name):
     #global exams_list
     #exams_list=[patient1,patient2,patient3]
 
+    '''
     for e in exams:
       e.exam_date = utc_to_local(e.exam_date)
       print e.exam_date
-    
+    '''
+
     return render_template('exams.html', exams = exams)
 
 def utc_to_local(utc_dt):
@@ -366,6 +369,7 @@ def before_request():
     g.user = current_user #current_user is a global variable set by Flask-Login
     #print g.user.username
 
+'''
 @app.route('/index')
 @login_required
 def index():
@@ -393,6 +397,8 @@ def index():
 
     #Has the user clicked a particular exam? If so, they need to let 
     #everyone else know how much space they need 
+'''
+
 
 @app.route('/test', methods=['GET','POST'])
 def test():
