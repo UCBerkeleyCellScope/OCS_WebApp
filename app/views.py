@@ -5,10 +5,10 @@ from forms import LoginForm
 from models import User, ROLE_SPECIALIST, ROLE_ADMIN, EyeImage, Exam
 #from sqlalchemy.util import buffer
 from s3 import uploadToS3, createBucket, getBucket, doesBucketExist, deleteAllBuckets
-from datetime import datetime
+import calendar
+from datetime import datetime, timedelta
 import string, random
 import traceback, sys
-
 
 global exams_list
 exams_list=[] 
@@ -29,8 +29,9 @@ def purge():
 def fetch_exams(study_name):
     #Return all Exams for which STUDY_NAME == study_name
 
-    exams = Exam.query.all()
+    exams = Exam.query.order_by(Exam.exam_date)
     
+    '''
     if(study_name == "trachoma"):
       patient1= {"firstName": "John", "lastName": "Smith", "mrn":"123", "date": "May 23rd 1990","uuid":8549085094235}
       patient2= {"firstName": "Sally", "lastName": "Johannsen", "mrn":"321", "date": "August 19th 2008","uuid":3209445}
@@ -40,15 +41,25 @@ def fetch_exams(study_name):
       patient1= {"firstName": "Martin", "lastName": "Scorcese", "mrn":"678", "date": "May 99rd 1997","uuid":804525211}
       patient2= {"firstName": "Scarlet", "lastName": "Jenkins", "mrn":"1337", "date": "July 19th 2108","uuid":96592662}
       patient3= {"firstName": "Willem", "lastName": "Dafoe", "mrn":"150", "date": "December 22th 1947","uuid":6843636}
-    
-    global exams_list
-    exams_list=[patient1,patient2,patient3]
-    return render_template('exams.html', exams_list=exams_list, exams = exams)
+    '''
+
+    #global exams_list
+    #exams_list=[patient1,patient2,patient3]
+    for e in exams:
+      e.exam_date = utc_to_local(e.exam_date)
+      print e.exam_date
+    return render_template('exams.html', exams = exams)
+
+def utc_to_local(utc_dt):
+    # get integer timestamp to avoid precision lost
+    timestamp = calendar.timegm(utc_dt.timetuple())
+    local_dt = datetime.fromtimestamp(timestamp)
+    assert utc_dt.resolution >= timedelta(microseconds=1)
+    return local_dt.replace(microsecond=utc_dt.microsecond)
 
 @app.route('/select/<study_name>/<exam_uuid>/',methods=['POST','GET'])
 def fetch_single_exam(study_name,exam_uuid):
     
-
     if(request.method == 'POST'): 
       exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
       if "diagnosis" in request.form:
@@ -60,6 +71,7 @@ def fetch_single_exam(study_name,exam_uuid):
         print "NO DIAGNOSIS FOUND"
 
     exam = Exam.query.filter(Exam.uuid == exam_uuid).first()
+
     return render_template('patient.html',exam=exam)
 
     #fetch the patient based on the UUID passed in the URL
