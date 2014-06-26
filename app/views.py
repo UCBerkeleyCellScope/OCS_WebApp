@@ -44,6 +44,11 @@ def utc_to_local(utc_dt):
     assert utc_dt.resolution >= timedelta(microseconds=1)
     return local_dt.replace(microsecond=utc_dt.microsecond)
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static', 'images'),
+                               'favicon.ico', mimetype='image/png')
+
 @app.route('/select/<study_name>/<exam_uuid>/',methods=['POST','GET'])
 def fetch_single_exam(study_name,exam_uuid):
     
