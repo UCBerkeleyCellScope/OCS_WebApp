@@ -125,10 +125,11 @@ def exam():
       date = "2000-01-01 11:11:11"
     
     try:
-      if("phoneNumber" in request.form):      
+      if("phoneNumber" in request.form and request.form["phoneNumber"]):      
         phoneNumber = request.form["phoneNumber"]
         print phoneNumber
-        phoneNumber = phoneNumber.translate(None,'()-')
+        phoneNumber = phoneNumber.translate(string.maketrans('', ''), '()-')
+        #phoneNumber = phoneNumber.translate(None,'()-')
         print phoneNumber
       else:
         phoneNumber = "4085291354"
