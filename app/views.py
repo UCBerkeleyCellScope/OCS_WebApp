@@ -213,16 +213,14 @@ def postImage():
 @app.route('/uploader', methods=['POST','PUT'])
 def uploader():
 
-  print "i am not crazy"
   #bucketName derived from "lastName-firstName-DD-MM-YY-AWS_ACCESS_KEY"
   #print "form"+str(request.form)
   #print "files"+str(request.files)
   
   url = "http://cdn.memegenerator.net/instances/500x/50708036.jpg"
-  print "make sure heroku works"
+
 
   if "eye" in request.form:
-    print "eye was in params"
     eye = request.form["eye"]
   else:
     print "eye wasnt there"
@@ -237,7 +235,6 @@ def uploader():
 
   try:
     if "date" in request.form:
-      print "Found a date"
       date = request.form["date"]
     else:
       print "No date found"
@@ -270,7 +267,6 @@ def uploader():
     #if eye is not "right" or eye is not "left":
       #throw error
 
-    print "Before eyeImage_uuid"  
 
     if "eyeImage_uuid" in request.form:
       print "eyeImage uuid in form"
@@ -284,7 +280,6 @@ def uploader():
     #eyeImage = EyeImage.query.filter(EyeImage.uuid == eyeImage_uuid).first()
     #print eyeImage
     #if not eyeImage: #This was indented
-    print "NOT A DUPLICATE IMAGE"
     if "exam_uuid" in request.form:
       print "exam_uuid was in form"
       exam_uuid = request.form["exam_uuid"]
@@ -313,11 +308,8 @@ def uploader():
     eyeImage = EyeImage(imageURL=url, uuid=eyeImage_uuid, eyeString=eye,fixationText=fixationText,image_date=d)
     print eyeImage
     exam.eyeImages.append(eyeImage)
-    print "appended eyeImage"
     db.session.add(eyeImage)
-    print "added eyeImage to session"
     db.session.commit()
-    print "commited the session"
     return jsonify(status="EyeImage Created")
 
   except:
