@@ -7,7 +7,7 @@ from models import User, ROLE_SPECIALIST, ROLE_ADMIN, EyeImage, Exam
 from s3 import uploadToS3, createBucket, getBucket, doesBucketExist, deleteAllBuckets
 import calendar
 from datetime import datetime, timedelta
-import string, random
+import string, random, re
 import traceback, sys
 
 global exams_list
@@ -128,7 +128,7 @@ def exam():
       if("phoneNumber" in request.form and request.form["phoneNumber"]):      
         phoneNumber = request.form["phoneNumber"]
         print phoneNumber
-        phoneNumber = phoneNumber.translate(string.maketrans('', ''), '()-')
+        phoneNumber = re.sub(r'[^\w]','',phoneNumber)
         #phoneNumber = phoneNumber.translate(None,'()-')
         print phoneNumber
       else:
