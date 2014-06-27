@@ -55,6 +55,7 @@ class Exam(db.Model):
     bucket = db.Column(db.String(80),unique=True)
     uuid = db.Column(db.String(80),unique=True)
     crazy = db.Column(db.String(80))
+    phoneNumber = db.Column(db.String(80))
     #date = db.Column(db.String(40))
 
     def __init__(self, firstName, lastName, uuid, bucket,exam_date):
@@ -63,7 +64,7 @@ class Exam(db.Model):
       self.uuid= uuid
       self.bucket=bucket
       self.exam_date=exam_date
-
+      
     def __repr__(self):
         #return '<Exam %r>' % (self.id)
         return '<Exam First Name:{!s} Last Name:{!s} UUID:{!s} # Images:{!s} Bucket:{!s}'\
