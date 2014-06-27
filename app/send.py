@@ -17,8 +17,8 @@ print message.sid
 def examUploadConfirmation(exam_uuid,phoneNumber):
   client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN) 
   print "INSIDE TWILIO METHOD"
-  text= "Thank you for using the Ocular CellScope. Your exam has been uploaded and is being\
-  reviewed by a clinician. You may view your exam at www.OCSWebApp.HerokuApp.com/select/glaucoma/"
+  text= "Thank you for using the Ocular CellScope. Your exam has been uploaded and is being"
+  + "reviewed by a clinician. You may view your exam at www.OCSWebApp.HerokuApp.com/select/glaucoma/"
   +str(exam_uuid)
   message = client.messages.create(body=text,to=phoneNumber,from_="+15104661333")
   print message.sid
