@@ -160,7 +160,6 @@ def exam():
         exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName, exam_date=d, phoneNumber = phoneNumber)
         db.session.add(exam)
         db.session.commit()
-        phoneNumber="+"+phoneNumber
         try:
           examUploadConfirmation(exam_uuid,phoneNumber)
         except:
