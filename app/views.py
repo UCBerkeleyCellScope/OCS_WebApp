@@ -5,6 +5,7 @@ from forms import LoginForm
 from models import User, ROLE_SPECIALIST, ROLE_ADMIN, EyeImage, Exam
 #from sqlalchemy.util import buffer
 from s3 import uploadToS3, createBucket, getBucket, doesBucketExist, deleteAllBuckets
+from send import examUploadConfirmation
 import calendar
 from datetime import datetime, timedelta
 import string, random, re
@@ -156,9 +157,17 @@ def exam():
       #include bucketName in Exam model
       exam = Exam.query.filter(Exam.uuid== exam_uuid).first()  
       if not exam:
-        exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName, exam_date=d)
+        exam = Exam(firstName=fn,lastName=ln,uuid=exam_uuid,bucket=bucketName, exam_date=d, phoneNumber = phoneNumber)
         db.session.add(exam)
         db.session.commit()
+        phoneNumber="+"+phoneNumber
+        try:
+          examUploadConfirmation(exam_uuid,phoneNumber)
+        except:
+          print '-'*60
+          print "SOMETHING WRONG WITH TWILIO"
+          print traceback.print_exc()
+          print '-'*60
         return jsonify(status="Exam Created")
       else:
         return jsonify(status="Exam was a duplicate and was not saved")
@@ -319,7 +328,7 @@ def uploader():
     #print traceback.print_exc(file=sys.stdout)
     print traceback.print_exc()
     print '-'*60
-    return jsonify(status="Upload Failed")
+    return jsonify(status="Image Upload Failed")
 
   
   #else:

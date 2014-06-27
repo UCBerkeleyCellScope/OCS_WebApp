@@ -58,13 +58,14 @@ class Exam(db.Model):
     phoneNumber = db.Column(db.String(80))
     #date = db.Column(db.String(40))
 
-    def __init__(self, firstName, lastName, uuid, bucket,exam_date):
+    def __init__(self, firstName, lastName, uuid, bucket,exam_date, phoneNumber):
       self.firstName = firstName
       self.lastName = lastName
       self.uuid= uuid
       self.bucket=bucket
       self.exam_date=exam_date
-      
+      self.phoneNumber=phoneNumber
+
     def __repr__(self):
         #return '<Exam %r>' % (self.id)
         return '<Exam First Name:{!s} Last Name:{!s} UUID:{!s} # Images:{!s} Bucket:{!s}'\
