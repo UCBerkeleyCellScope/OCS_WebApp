@@ -123,14 +123,22 @@ def exam():
       print date
     else:
       date = "2000-01-01 11:11:11"
-    if("phoneNumber" in request.form):      
-      phoneNumber = request.form["phoneNumber"]
-      print phoneNumber
-      phoneNumber = phoneNumber.translate(None,'()-')
-      print phoneNumber
-    else:
-      phoneNumber = "4085291354"
-      print phoneNumber
+    
+    try:
+      if("phoneNumber" in request.form):      
+        phoneNumber = request.form["phoneNumber"]
+        print phoneNumber
+        phoneNumber = phoneNumber.translate(None,'()-')
+        print phoneNumber
+      else:
+        phoneNumber = "4085291354"
+        print phoneNumber
+    except:
+      print "Exception in PHONE NUMBER"
+      print '-'*60
+      #print traceback.print_exc(file=sys.stdout)
+      print traceback.print_exc()
+      print '-'*60
 
 
     d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
