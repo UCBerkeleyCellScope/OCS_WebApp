@@ -11,9 +11,6 @@ from datetime import datetime, timedelta
 import string, random, re
 import traceback, sys
 
-global exams_list
-exams_list=[] 
-
 @app.route('/')
 @app.route('/select/')
 def select_study():
@@ -32,9 +29,11 @@ def fetch_exams(study_name):
 
     exams = Exam.query.order_by(Exam.exam_date.desc())
     
+    '''
     for e in exams:
       e.exam_date = utc_to_local(e.exam_date)
       print e.exam_date
+    '''
 
     return render_template('exams.html', exams = exams)
 
@@ -142,7 +141,6 @@ def exam():
       print traceback.print_exc()
       print '-'*60
 
-
     d = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
     print d
     yyyymmddHHMM = d.strftime("%Y-%m-%d-%H-%M")
@@ -228,7 +226,6 @@ def uploader():
   
   url = "http://cdn.memegenerator.net/instances/500x/50708036.jpg"
 
-
   if "eye" in request.form:
     eye = request.form["eye"]
   else:
@@ -275,7 +272,6 @@ def uploader():
 
     #if eye is not "right" or eye is not "left":
       #throw error
-
 
     if "eyeImage_uuid" in request.form:
       print "eyeImage uuid in form"
@@ -329,146 +325,9 @@ def uploader():
     print '-'*60
     return jsonify(status="Image Upload Failed")
 
-  
   #else:
   #  return jsonify(status="Something Wrong with Exam")
 #else:
   #return jsonify(status="EyeImage was a duplicate and was not saved")
   
   #return jsonify(status="An Image Upload was completed")
-
-'''
-@app.route('/psql')
-def psql():
-'''
-
-@app.route('/logout')
-def logout():
-    logout_user()
-    return redirect(url_for('index'))
-
-@lm.user_loader
-def load_user(id):
-  return User.query.get(int(id))
-  #User IDs in Flask-Login are always unicode strings, so
-  #convert the string into an integer every time eyou come o Python with data
-
-@app.route('/user/<username>')
-@login_required
-def user(username):
-    user = User.query.filter_by(username = username).first()
-    if user == None:
-        flash('User ' + username + ' not found.') #note don't have to pass flash messages
-        return redirect(url_for('index'))
-    exams = [
-        { 'assigned_specialist': user, 'diagnosis': 'Test post #1' },
-        { 'assigned_specialist': user, 'diagnosis': 'Test post #2' }
-    ]
-    return render_template('user.html',
-        user = user,
-        exams = exams)
-
-@app.before_request
-def before_request():
-    g.user = current_user #current_user is a global variable set by Flask-Login
-    #print g.user.username
-
-@app.route('/index')
-@login_required
-def index():
-    user = g.user
-    b = s3.get_bucket("cesllscope13")
-    for x in b.list:
-      print x.key()
-
-    exams = [ # fake array of posts
-        { 
-            'assigned_specialist': { 'username': 'John' }, 
-            'diagnosis': 'Beautiful day in Portland!' 
-        },
-        { 
-            'assigned_specialist': { 'username': 'Susan' }, 
-            'diagnosis': 'The Avengers movie was so cool!' 
-        },
-    ]
-    return render_template("index.html",
-        title = 'Home',
-        user = user,
-        exams = exams)
-    #Get a list of all the buckets (exams) from S3 then display them
-    #If a user clicks on an exam, we'll retrieve that exam
-
-    #Has the user clicked a particular exam? If so, they need to let 
-    #everyone else know how much space they need 
-
-
-
-@app.route('/test', methods=['GET','POST'])
-def test():
-  if(request.method=="POST"):
-    print "args"+str(request.args)
-    print "form"+str(request.form)
-
-    print "values"+str(request.values)
-    print "data"+str(request.data)
-
-    return request.form["firstName"]
-
-    #return str(request.values["firstName"])
-    #return "OMG POST\n"
-  else:
-    return "HOLY MOLY\n"
-
-'''
-@app.route('/login', methods = ['GET', 'POST']) #only GET by default
-@oid.loginhandler
-def login():
-    if g.user is not None and g.user.is_authenticated():
-      return redirect(url_for('index')) #if already logged in don't need to re login
-      # is used to store and save data during a request
-      #url_for(<method_name>) is a clean way to grab the URL for a view function
-
-    form = LoginForm()
-    if form.validate_on_submit():
-        #this is the flask session
-        session['remember_me'] = form.remember_me.data
-        #session remains for future requests made by the same client
-
-        #The part handles the redirect to "allow the user to log in"
-        return oid.try_login(form.openid.data, ask_for = ['nickname', 'email'])
-        
-        #oid object user authentication
-        #'ask for' is a list of data items that we want from the OpenID provider
-        #we'll get back from yahoo a username and email hopefully
-
-    return render_template('login.html', 
-        title = 'Sign In',
-        form = form,
-        providers = app.config['OPENID_PROVIDERS'])
-      
-#This is a callback for OpenID      
-@oid.after_login
-def after_login(resp):
-  #resp has info returned by openID
-  if resp.email is None or resp.email == "":
-      flash('Invalid login. Please try again.')
-      return redirect(url_for('login')) #resp needs to have an email in it
-  user = User.query.filter_by(email = resp.email).first() #check the DB for the user
-  if user is None:
-      nickname = resp.nickname
-      if nickname is None or nickname == "":
-          nickname = resp.email.split('@')[0]
-      user = User(username = nickname, email = resp.email, role = ROLE_SPECIALIST)
-      db.session.add(user)
-      db.session.commit()
-  remember_me = False
-  if 'remember_me' in session:
-      remember_me = session['remember_me']
-      session.pop('remember_me', None)
-
-  login_user(user, remember = remember_me) #This is a Flask-Login function
-
-  return redirect(request.args.get('next') or url_for('index'))
-  #if the user tries to access a page without logging in, they are sent over to log-in
-  #once successfully logged in, the user will be brought back to this page
-'''
