@@ -2,3 +2,4 @@ venv
 *.pyc
 microblog-0.15/*
 app/tmp/*
+config.py
