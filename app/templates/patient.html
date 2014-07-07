@@ -1,6 +1,11 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 
+{% block head %} 
+
+{% endblock %}
+
+
 {%block content%}
 <h1> Exam </h1>
 
@@ -56,11 +61,31 @@
 </h1> Diagnosis </h1>
   <p>{{exam.diagnosis}} <p>
 
+  <!-- Practice a For Loop
+
+
+  -->
+
+
+
+
+
+
+
+
+  <script>
+    $(document).ready(function(){
+      $("#diagnosisBtn").click(function(){
+        alert("Text: " + $("#test").text());
+      });
+    });
+  </script>
+
   <form action="" method="post" name="diagnosis">
     <p><textarea rows="4" cols="50" placeholder="Update the diagnosis here...">
       </textarea>
     </p>
-    <p><input type="submit" value="Save"></p>
+    <p><input type="submit" value="Save" id="diagnosisBtn"></p>
   </form>
 
 {%endblock%}
