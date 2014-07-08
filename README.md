@@ -71,21 +71,14 @@ $ deactivate
 
 $ Why using gunicorn
 
-$jinja
-
+jinja is for templating
 $ error
 $ foreman 
 
-Mention db_migrate.py
+db_migrate.py used when the data model is updated
 $ heroku run python db_migrate.py
 
 $ boto AWS commands
-$ constructor 
-
-Mention db_
-
-About Flask
-run.py
 
 Gunicorn dependency
 
